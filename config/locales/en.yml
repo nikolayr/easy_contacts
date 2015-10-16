@@ -1,0 +1,6 @@
+# English strings go here for Rails i18n
+en:
+  # my_label: "My label"
+  easy_contacts:               "easy contacts"
+  easy_contacts_proj_menu_str: "EasyContacts"
+  easy_contacts_enabled_str:   "Enable Easy Contacts"
