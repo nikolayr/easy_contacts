@@ -1,1 +1,9 @@
-<h2>EasyContactsController#update</h2>
+<%= title l(:label_contact_update) %>
+
+<%= form_for [:project,:easy_contact] do |f| %>
+
+    <%= render :partial => 'easy_contacts/form', :locals => {:f => f} %>
+
+    <%= submit_tag l(:button_update) %>
+<% end %>
+

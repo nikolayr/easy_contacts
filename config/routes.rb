@@ -1,15 +1,20 @@
 # Plugin's routes
 # See: http://guides.rubyonrails.org/routing.html
-match "projects/:project_id/easy_contacts" => "easy_contacts#index", :as => :easy_contacts
+#match "projects/:project_id/easy_contacts" => "easy_contacts#index"
+
+resources :easy_contacts, :path => "/easy_contacts"
+post "easy_contacts/new(.:format)" => "easy_contacts#create"
+
+get "projects/:project_id/easy_contacts(.:format)" => "easy_contacts#index"
+get "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#new"
+get "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#show"
+post "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#create"
+get "projects/:project_id/easy_contacts/:id/edit(.:format)" => "easy_contacts#edit"
+put "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#update"
+delete "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#destroy"
 
 
-get "projects/:project_id/easy_contacts(.:format)" => "easy_contacts#index", :as => :easy_contacts
-get "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#show", :as => :easy_contacts
-get "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#new", :as => :easy_contacts
-post "projects/:project_id/easy_contacts(.:format)" => "easy_contacts#create", :as => :easy_contacts
-get "projects/:project_id/easy_contacts/:id/edit(.:format)" => "easy_contacts#edit",:as => :easy_contacts
-put "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#update",:as => :easy_contacts
-delete "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#destroy",:as => :easy_contacts
+#,:as => :easy_contacts
 
 
 #   products GET    /products(.:format)          products#index

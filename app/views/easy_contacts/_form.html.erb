@@ -1,0 +1,10 @@
+
+<div class="box tabular">
+  <!--[form:easy_contacts]-->
+  <p> <%= f.text_field :first_name, :required => true, :size => 60 %></p>
+  <p> <%= f.text_field :last_name, :required => false, :size => 60 %></p>
+  <p> <%= f.text_field :date_created, readonly: true, value: 'auto' %></p>
+  <%= f.hidden_field :project_id, :value => @project.object_id %>
+</div>
+
+<!-- load custom fields, see: issue_custom_field_ids -->

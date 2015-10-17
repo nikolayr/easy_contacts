@@ -1,1 +1,12 @@
-<h2>EasyContactsController#new</h2>
+<%= title l(:label_contact_new) %>
+
+<%= labelled_form_for 'easy_contact' do |f| %>
+    <div class="box tabular">
+      <!--[form:easy_contacts]-->
+      <p> <%= f.text_field :first_name, :required => true, :size => 60 %></p>
+      <p> <%= f.text_field :last_name, :required => false, :size => 60 %></p>
+      <p> <%= f.text_field :date_created, readonly: true, value: 'auto' %></p>
+      <%= f.hidden_field :project_id, :value => @project.object_id %>
+    </div>
+    <%= submit_tag l(:button_create) %>
+<% end %>

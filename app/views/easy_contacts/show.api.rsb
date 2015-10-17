@@ -1,0 +1,10 @@
+api.easy_contacts do
+  api.id          @econtact.id
+  api.first_name  @econtact.first_name
+  api.last_name   @econtact.last_name
+  api.date_created @econtact.date_created
+
+  render_api_custom_values @econtact.visible_custom_field_values, api
+  render_api_includes(@econtact, api)
+
+end

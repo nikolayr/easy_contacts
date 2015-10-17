@@ -2,15 +2,13 @@
 
 <div>Show one contact item here</div>
 
-<%= labelled_form_for 'easy_contact' do |f| %>
+<%= labelled_form_for @econtact do |f| %>
 
-    <%= render :partial => 'easy_contacts/form', :locals => {:f => f,:econtact => @econtact} %>
     <div class="box tabular">
       <!--[form:easy_contacts]-->
-      <p> <%= f.text_field :first_name, :required => true, :size => 60 %></p>
-      <p> <%= f.text_field :last_name, :required => false, :size => 60 %></p>
-      <p> <%= f.text_field :date_created, readonly: true, value: 'auto' %></p>
-      <%= f.hidden_field :project_id, :value => @project.object_id %>
+      <p> <%= f.text_field :first_name,  readonly: true, value: @econtact.first_name %></p>
+      <p> <%= f.text_field :last_name,   readonly: true, value: @econtact.last_name %></p>
+      <p> <%= f.text_field :date_created,readonly: true, value: @econtact.date_created %></p>
     </div>
 
 

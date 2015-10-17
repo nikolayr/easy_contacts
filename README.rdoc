@@ -2,7 +2,9 @@
 
 Create Contact plugin into Redmine. All work is done only in plugin.
 
--  create fully REST controller with associated views for creating, updating and deleting contacts. Index (list) will be via custom query. (create class contact query inherited from query)
+-  create fully REST controller with associated views for creating, updating and deleting
+contacts. Index (list) will be via custom query.
+(create class contact query inherited from query)
 
 -  model Contact has these attributes: first name, last name and timestamps. You should also define custom fields and attach files
 
@@ -21,6 +23,10 @@ Create Contact plugin into Redmine. All work is done only in plugin.
 > bundle exec rake redmine:plugins:migrate
 
 > then enable plugin within projects settings
+
+- uninstall
+
+> bundle exec rake redmine:plugins:migrate NAME=easy_contacts VERSION=0 [RAILS_ENV=production]
 
 more info on plugin creation can be found at:
 www.redmine.org/projects/redmine/wiki/Plugin_Tutorial

@@ -1,6 +1,17 @@
-# English strings go here for Rails i18n
+# language spec
 en:
-  # my_label: "My label"
   easy_contacts:               "easy contacts"
   easy_contacts_proj_menu_str: "EasyContacts"
-  easy_contacts_enabled_str:   "Enable Easy Contacts"
+  easy_contacts_enabled_str:   "Add some settings if needed"
+  easy_contacts_index:          "Contacts"
+  label_custom_contact:        "Custom Contact Fields"
+  label_contact_new:           "New Contact"
+  label_contacts:              "Contacts"
+  field_first_name:            "First Name"
+  field_last_name:             "Last Name"
+  field_date_created:          "Created at"
+  label_contact_update:        "Update contact"
+  add_new_easy_contact:        "Add new Contact"
+  contact_record_created:      "Contact record created"
+  err_contact_record_not_created: "Unable to create record"
+
