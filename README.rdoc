@@ -15,6 +15,14 @@ contacts. Index (list) will be via custom query.
 -  all contacts are searchable via standard Redmine‘s search
 -  creating and updating contact is visible in user profile (activity)
 
+---
+
+2do
+ add edit
+ add contacts creation to activty
+ attach files
+ add custom fields
+ add custom query to contacts#index
 
 ---
 

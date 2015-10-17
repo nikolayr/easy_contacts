@@ -17,8 +17,6 @@ class EasyContactsController < ApplicationController
   helper :sort
   include SortHelper
 
-  before_filter :find_optional_project, :only => [:index]
-
   accept_api_auth :index, :show, :create, :update, :destroy
 
   def index
@@ -101,15 +99,4 @@ class EasyContactsController < ApplicationController
 
     end
   end
-
-  def easy_contact_path
-    request.fulpath.to_s.gsub(/(.*)(\/.*)/,"\1/#{item.id}")
-  end
-
-  def easy_contact_url(item)
-    #request.fulpath
-    puts "resetting path one step backwad\n\n\n"
-    request.fulpath.to_s.gsub(/(.*)(\/.*)/,"\1/#{item.id}")
-  end
-
 end

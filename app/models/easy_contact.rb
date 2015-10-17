@@ -37,14 +37,4 @@ class EasyContact < ActiveRecord::Base
     true
   end
 
-  def find_optional_project
-    return true unless params[:id]
-    @project = Project.find(params[:id])
-    authorize
-  rescue ActiveRecord::RecordNotFound
-    render_404
-  end
-
-
-
 end

@@ -17,11 +17,7 @@
         <td><%= i.date_created %></td>
         <td><%= link_to 'Show', controller: 'easy_contacts', action: 'show', id: i %></td>
         <td><%= link_to 'Edit', controller: 'easy_contacts', action: 'edit', id: i %></td>
-        <td>
-          <%= link_to 'Remove', controller: 'easy_contacts',
-                                  method: :delete, id: i,
-                                  data: {confirm: l(:text_are_you_sure)},
-                                  class: 'icon icon-del' %></td>
+        <td><%= delete_link("easy_contacts/#{i.id}" ) %></td>
       </tr>
   <% end %>
 </table>
