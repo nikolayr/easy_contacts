@@ -2,7 +2,7 @@
 
 <div>Show one contact item here</div>
 
-<%= labelled_form_for @econtact do |f| %>
+<%= labelled_form_for 'easy_contact' do |f| %>
 
     <div class="box tabular">
       <!--[form:easy_contacts]-->
@@ -10,6 +10,8 @@
       <p> <%= f.text_field :last_name,   readonly: true, value: @econtact.last_name %></p>
       <p> <%= f.text_field :date_created,readonly: true, value: @econtact.date_created %></p>
     </div>
-
-
 <% end %>
+<p>Custom Fields </p>
+<p>Attachments should be show here</p>
+<br>
+<%= link_to l(:show_all_easy_contact), controller: 'easy_contacts', action: 'index' %>

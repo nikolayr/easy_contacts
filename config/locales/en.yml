@@ -12,6 +12,9 @@ en:
   field_date_created:          "Created at"
   label_contact_update:        "Update contact"
   add_new_easy_contact:        "Add new Contact"
-  contact_record_created:      "Contact record created"
+  notice_contact_record_created:      "Contact record created"
   err_contact_record_not_created: "Unable to create record"
+  err_contact_record_not_deleted: "Unable to delete record"
+  notice_contact_record_deleted:  "Contact record deleted"
+  show_all_easy_contact:          "Show all"
 

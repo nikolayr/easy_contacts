@@ -15,11 +15,15 @@
         <td><%= i.first_name %></td>
         <td><%= i.last_name %></td>
         <td><%= i.date_created %></td>
-        <td><%= link_to "Show", i %></td>
-        <td><%= link_to "Edit", controller: "easy_contacts", action: "edit", id: i %></td>
-        <td><%= link_to "Remove", i, method: :delete, data: { confirm: "Are you sure?" } %></td>
+        <td><%= link_to 'Show', controller: 'easy_contacts', action: 'show', id: i %></td>
+        <td><%= link_to 'Edit', controller: 'easy_contacts', action: 'edit', id: i %></td>
+        <td>
+          <%= link_to 'Remove', controller: 'easy_contacts',
+                                  method: :delete, id: i,
+                                  data: {confirm: l(:text_are_you_sure)},
+                                  class: 'icon icon-del' %></td>
       </tr>
   <% end %>
 </table>
 <br>
-<%= link_to l(:add_new_easy_contact), new_easy_contact_path %>
+<%= link_to l(:add_new_easy_contact), controller: 'easy_contacts', action: 'create' %>

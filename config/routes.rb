@@ -2,8 +2,9 @@
 # See: http://guides.rubyonrails.org/routing.html
 #match "projects/:project_id/easy_contacts" => "easy_contacts#index"
 
-resources :easy_contacts, :path => "/easy_contacts"
-post "easy_contacts/new(.:format)" => "easy_contacts#create"
+#resources :easy_contacts, :path => "/easy_contacts"
+#post "easy_contacts/new(.:format)" => "easy_contacts#create"
+#delete "easy_contacts/:id(.:format)" => "easy_contacts#destroy"
 
 get "projects/:project_id/easy_contacts(.:format)" => "easy_contacts#index"
 get "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#new"

@@ -17,6 +17,7 @@ class EasyContactsController < ApplicationController
   helper :sort
   include SortHelper
 
+  before_filter :find_optional_project, :only => [:index]
 
   accept_api_auth :index, :show, :create, :update, :destroy
 
@@ -86,12 +87,29 @@ class EasyContactsController < ApplicationController
 
   def destroy
     @econtact = EasyContact.find(params[:id])
-    @econtact.destroy
 
     respond_to do |format|
-      format.html { redirect_to easy_contacts_url }
-      format.json { head :no_content }
+      if @econtact.destroy
+        flash[:notice] = l(:notice_contact_record_deleted)
+        format.html { redirect_to action: "index" }
+        format.json { head :no_content }
+      else
+        flash[:error] = l(:err_contact_record_not_deleted)
+        format.html { redirect_to easy_contacts_url }
+        format.json { head :no_content }
+      end
+
     end
+  end
+
+  def easy_contact_path
+    request.fulpath.to_s.gsub(/(.*)(\/.*)/,"\1/#{item.id}")
+  end
+
+  def easy_contact_url(item)
+    #request.fulpath
+    puts "resetting path one step backwad\n\n\n"
+    request.fulpath.to_s.gsub(/(.*)(\/.*)/,"\1/#{item.id}")
   end
 
 end
