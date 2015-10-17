@@ -1,3 +1,9 @@
+<% if display_main_menu?(@project) %>
+    <div id="main-menu">
+      <%= render_main_menu(@project) %>
+    </div>
+<% end %>
+
 <%= title l(:label_contact_new) %>
 
 <%= labelled_form_for 'easy_contact' do |f| %>
@@ -10,3 +16,5 @@
     </div>
     <%= submit_tag l(:button_create) %>
 <% end %>
+<p>Custom Fields </p>
+<p>Attachments should be show here</p>

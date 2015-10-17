@@ -17,4 +17,5 @@ en:
   err_contact_record_not_deleted: "Unable to delete record"
   notice_contact_record_deleted:  "Contact record deleted"
   show_all_easy_contact:          "Show all"
+  easy_contact_snglr:           "Contact"
 

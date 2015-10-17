@@ -1,3 +1,16 @@
+<% if display_main_menu?(@project) %>
+    <div id="main-menu">
+      <%= render_main_menu(@project) %>
+    </div>
+<% end %>
+
+<div class="contextual">
+  <% if true %>
+      <%= link_to l(:button_edit), 'qery_path', :class => 'icon icon-edit' %>
+      <%= delete_link 'deleet_query' %>
+  <% end %>
+</div>
+
 <%= title l(:easy_contacts_index) %>
 
 <table>
@@ -22,4 +35,5 @@
   <% end %>
 </table>
 <br>
-<%= link_to l(:add_new_easy_contact), controller: 'easy_contacts', action: 'create' %>
+<%= link_to l(:add_new_easy_contact), 'easy_contacts/new',{ class: 'icon icon-add'} %>
+

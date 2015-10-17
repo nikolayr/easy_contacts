@@ -24,6 +24,9 @@ contacts. Index (list) will be via custom query.
  add custom fields
  add custom query to contacts#index
 
+ ?add project id to contacts, sort out by projectid when showing all contacts
+
+
 ---
 
 - installation

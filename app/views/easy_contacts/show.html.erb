@@ -1,6 +1,10 @@
-<%= title l(:label_contacts) %>
+<% if display_main_menu?(@project) %>
+    <div id="main-menu">
+      <%= render_main_menu(@project) %>
+    </div>
+<% end %>
 
-<div>Show one contact item here</div>
+<h2><%= contacts_heading(@econtact) %></h2>
 
 <%= labelled_form_for 'easy_contact' do |f| %>
 

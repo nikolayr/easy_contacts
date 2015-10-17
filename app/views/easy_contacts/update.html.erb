@@ -1,3 +1,9 @@
+<% if display_main_menu?(@project) %>
+    <div id="main-menu">
+      <%= render_main_menu(@project) %>
+    </div>
+<% end %>
+
 <%= title l(:label_contact_update) %>
 
 <%= form_for [:project,:easy_contact] do |f| %>
