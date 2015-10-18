@@ -21,6 +21,7 @@
     </fieldset>
 
     <fieldset><legend><%= l(:label_attachment_plural) %></legend>
+      <%= link_to_attachments @econtact, :thumbnails => true %>
       <p><%= render :partial => 'attachments/form', :locals => {:container => @econtact} %></p>
     </fieldset>
 

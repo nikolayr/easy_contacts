@@ -21,7 +21,6 @@ class EasyContactsController < ApplicationController
 
   before_filter :find_project, :authorize, :only => :index
 
-
   def index
     @econtacts = EasyContact.all
     respond_to do |format|
@@ -33,6 +32,7 @@ class EasyContactsController < ApplicationController
   def show
     @project = Project.find_by_identifier(params[:project_id])
     @econtact = EasyContact.find(params[:id])
+
     respond_to do |format|
       format.html
       format.json { render json: @econtact }
@@ -43,6 +43,8 @@ class EasyContactsController < ApplicationController
     @project = Project.find_by_identifier(params[:project_id])
 
     @econtact = EasyContact.new
+    @econtact.project_id = @project.id
+
     respond_to do |format|
       format.html
       format.json { render json: @econtact }
@@ -52,15 +54,18 @@ class EasyContactsController < ApplicationController
   def edit
     @project = Project.find_by_identifier(params[:project_id])
     @econtact = EasyContact.find(params[:id])
+    @econtact.project_id = @project.id if @econtact.project_id == 0
   end
 
   def create
     # 2do validate params
     # possible to use strong parameters params[:easy_contact].permit(:first_name,:last_name,:date_created)
     @econtact = EasyContact.new({:first_name => params[:easy_contact][:first_name],
-                                 :last_name=>params[:easy_contact][:last_name]})
+                                 :last_name=>params[:easy_contact][:last_name],
+                                 :project_id=>params[:project_id]})
 #                                 :date_created=>},
 #                                 :project_id=>)
+
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 
     respond_to do |format|
@@ -79,6 +84,10 @@ class EasyContactsController < ApplicationController
   def update
     @project = Project.find_by_identifier(params[:project_id])
     @econtact = EasyContact.find(params[:id])
+
+    @econtact.project_id = @project.id if @econtact.project_id == 0
+
+    @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 
     respond_to do |format|
       if @econtact.update_attributes({first_name: params[:easy_contact][:first_name], last_name: params[:easy_contact][:last_name]})
@@ -111,6 +120,12 @@ class EasyContactsController < ApplicationController
   end
 
   private
+
+
+  def find_easy_contact(item_id, proj)
+    @econtact = EasyContact.find(item_id)
+    @econtact.project = proj
+  end
 
   def find_project
     # @project variable must be set before calling the authorize filter

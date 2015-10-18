@@ -6,16 +6,29 @@ class ContactsCustomFields < CustomField
 end
 
 class EasyContact < ActiveRecord::Base
-
-#  attr_reader :first_name,:last_name,:date_created
+  unloadable
 
   before_save :generate_timestamp
+  after_save :create_journal
 
-  acts_as_attachable :after_add => :attachment_added, :after_remove => :attachment_removed
-  acts_as_customizable
+  #acts_as_attachable :view_permission => :attachments_sets, :delete_permission => :attachments_sets
+
+  acts_as_attachable :after_add => :attachment_added,
+                     :after_remove => :attachment_removed,
+                     :view_permission => :view_easy_contacts_attachments,
+                     :delete_permission => :delete_easy_contacts_attachments
+
+  has_many :journals, :as => :journalized, :dependent => :destroy
+  has_many :visible_journals,
+           :class_name => 'Journal',
+           :as => :journalized,
+           :conditions => Proc.new {
+             ["(#{Journal.table_name}.private_notes = ? OR (#{Project.allowed_to_condition(User.current, :view_private_notes)}))", false]
+           },
+           :readonly => true
 
 =begin
-
+  acts_as_customizable
   has_and_belongs_to_many :contacts_custom_fields,
                           :class_name => 'ContactsCustomFields',
                           :order => "#{CustomField.table_name}.position",
@@ -23,17 +36,107 @@ class EasyContact < ActiveRecord::Base
                           :association_foreign_key => 'custom_field_id'
 =end
 
-  acts_as_customizable
   acts_as_searchable :columns => ['first_name', 'last_name'], :project_key => 'id', :permission => nil
+
   acts_as_event :title => Proc.new {|o| "#{l(:label_custom_contact)}: #{o.first_name}"},
                 :url => Proc.new {|o| {:controller => 'easy_contacts', :action => 'show', :id => o}},
                 :author => nil
+
+# Saves the changes in a Journal
+# Called after_save
+  def create_journal
+    if @current_journal
+      # attributes changes
+      if @attributes_before_change
+        (Issue.column_names - %w(id first_name last_name date_created)).each {|c|
+          before = @attributes_before_change[c]
+          after = send(c)
+          next if before == after || (before.blank? && after.blank?)
+          @current_journal.details << JournalDetail.new(:property => 'attr',
+                                                        :prop_key => c,
+                                                        :old_value => before,
+                                                        :value => after)
+        }
+      end
+      if @custom_values_before_change
+        # custom fields changes
+        custom_field_values.each {|c|
+          before = @custom_values_before_change[c.custom_field_id]
+          after = c.value
+          next if before == after || (before.blank? && after.blank?)
+
+          if before.is_a?(Array) || after.is_a?(Array)
+            before = [before] unless before.is_a?(Array)
+            after = [after] unless after.is_a?(Array)
+
+            # values removed
+            (before - after).reject(&:blank?).each do |value|
+              @current_journal.details << JournalDetail.new(:property => 'cf',
+                                                            :prop_key => c.custom_field_id,
+                                                            :old_value => value,
+                                                            :value => nil)
+            end
+            # values added
+            (after - before).reject(&:blank?).each do |value|
+              @current_journal.details << JournalDetail.new(:property => 'cf',
+                                                            :prop_key => c.custom_field_id,
+                                                            :old_value => nil,
+                                                            :value => value)
+            end
+          else
+            @current_journal.details << JournalDetail.new(:property => 'cf',
+                                                          :prop_key => c.custom_field_id,
+                                                          :old_value => before,
+                                                          :value => after)
+          end
+        }
+      end
+      @current_journal.save
+      # reset current journal
+      init_journal @current_journal.user, @current_journal.notes
+    end
+  end
+
+  def init_journal(user, notes = "")
+    @current_journal ||= Journal.new(:journalized => self, :user => user, :notes => notes)
+    if new_record?
+      @current_journal.notify = true # new issue is not notified? false
+    else
+      @attributes_before_change = attributes.dup
+      @custom_values_before_change = {}
+      self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
+    end
+    @current_journal
+  end
 
   def generate_timestamp
     self.date_created = DateTime.now if self.date_created.nil?
   end
 
-  def self.visible
+  def attachment_added(obj)
+    if @current_journal && !obj.new_record?
+      @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :value => obj.filename)
+    end
+  end
+
+# Callback on attachment deletion
+  def attachment_removed(obj)
+    if @current_journal && !obj.new_record?
+      @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :old_value => obj.filename)
+      @current_journal.save
+    end
+  end
+
+
+  def project
+    @attributes[:project_id]
+  end
+
+  def attachments_visible?(user)
+    true
+  end
+
+  def attachments_deletable?
     true
   end
 

@@ -17,6 +17,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+ add journal
  attach files
  add contacts creation to activty
  add custom fields

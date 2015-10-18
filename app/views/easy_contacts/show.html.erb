@@ -20,7 +20,7 @@
     </fieldset>
 
     <fieldset><legend><%= l(:label_attachment_plural) %></legend>
-      <p><%= render :partial => 'show_attachments', :locals => {:container => @econtact} %></p>
+      <%= link_to_attachments @econtact, :thumbnails => true %>
     </fieldset>
 
     <div class="contextual" style="float:left;">
