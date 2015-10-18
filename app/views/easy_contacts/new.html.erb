@@ -14,7 +14,15 @@
       <p> <%= f.text_field :date_created, readonly: true, value: 'auto' %></p>
       <%= f.hidden_field :project_id, :value => @project.object_id %>
     </div>
+
+    <fieldset><legend><%= l(:label_custom_fields) %></legend>
+      <p>load custom fields here</p>
+    </fieldset>
+
+    <fieldset><legend><%= l(:label_attachment_plural) %></legend>
+      <p><%= render :partial => 'attachments/form', :locals => {:container => @econtact} %></p>
+    </fieldset>
+
     <%= submit_tag l(:button_create) %>
 <% end %>
-<p>Custom Fields </p>
 <p>Attachments should be show here</p>

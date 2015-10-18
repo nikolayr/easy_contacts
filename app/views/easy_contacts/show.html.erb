@@ -14,8 +14,21 @@
       <p> <%= f.text_field :last_name,   readonly: true, value: @econtact.last_name %></p>
       <p> <%= f.text_field :date_created,readonly: true, value: @econtact.date_created %></p>
     </div>
+
+    <fieldset><legend><%= l(:label_custom_fields) %></legend>
+      <p>load custom fields here</p>
+    </fieldset>
+
+    <fieldset><legend><%= l(:label_attachment_plural) %></legend>
+      <p><%= render :partial => 'show_attachments', :locals => {:container => @econtact} %></p>
+    </fieldset>
+
+    <div class="contextual" style="float:left;">
+
+      <%= link_to l(:button_edit), {controller: 'easy_contacts', action: 'edit', id: @econtact.id},:class => 'icon icon-edit' %> |
+      <%= delete_link econ_id(@econtact) %> |
+      <%= link_to l(:show_all_easy_contact), controller: 'easy_contacts', action: 'index' %>
+    </div>
+
 <% end %>
-<p>Custom Fields </p>
-<p>Attachments should be show here</p>
-<br>
-<%= link_to l(:show_all_easy_contact), controller: 'easy_contacts', action: 'index' %>
+

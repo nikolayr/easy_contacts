@@ -11,6 +11,7 @@ get "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#new"
 get "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#show"
 post "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#create"
 get "projects/:project_id/easy_contacts/:id/edit(.:format)" => "easy_contacts#edit"
+post "projects/:project_id/easy_contacts/:id/edit(.:format)" => "easy_contacts#update"
 put "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#update"
 delete "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#destroy"
 

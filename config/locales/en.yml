@@ -16,6 +16,9 @@ en:
   err_contact_record_not_created: "Unable to create record"
   err_contact_record_not_deleted: "Unable to delete record"
   notice_contact_record_deleted:  "Contact record deleted"
+  notice_contact_record_update:   "Contact record updated"
+  err_contact_record_not_updated: "Contact record not updated"
   show_all_easy_contact:          "Show all"
-  easy_contact_snglr:           "Contact"
+  easy_contact_snglr:             "Contact"
+  label_custom_fields:            "Custom fields"
 

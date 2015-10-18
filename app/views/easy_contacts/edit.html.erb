@@ -4,4 +4,28 @@
     </div>
 <% end %>
 
-<h2>EasyContactsController#edit</h2>
+<h2><%= contacts_heading(@econtact) %></h2>
+
+<%= labelled_form_for 'easy_contact' do |f| %>
+
+    <div class="box tabular">
+      <!--[form:easy_contacts]-->
+      <p> <%= f.text_field :first_name,  value: @econtact.first_name %></p>
+      <p> <%= f.text_field :last_name,   value: @econtact.last_name %></p>
+      <p> <%= f.text_field :date_created,readonly: true, value: @econtact.date_created %></p>
+      <p>Custom Fields </p>
+    </div>
+
+    <fieldset><legend><%= l(:label_custom_fields) %></legend>
+      <p>load custom fields here</p>
+    </fieldset>
+
+    <fieldset><legend><%= l(:label_attachment_plural) %></legend>
+      <p><%= render :partial => 'show_attachments', :locals => {:container => @econtact} %></p>
+      <p><%= render :partial => 'attachments/form', :locals => {:container => @econtact} %></p>
+    </fieldset>
+
+    <%= submit_tag l(:button_update) %>
+    <%= link_to l(:button_cancel), action: 'show' %>
+<% end %>
+<p>Attachments should be show here</p>

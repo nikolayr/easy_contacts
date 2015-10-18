@@ -1,10 +1,22 @@
 
 <div class="box tabular">
   <!--[form:easy_contacts]-->
-  <p> <%= f.text_field :first_name, :required => true, :size => 60 %></p>
-  <p> <%= f.text_field :last_name, :required => false, :size => 60 %></p>
+  <p> <%= f.text_field :first_name, :required => true, :size => 30 %></p>
+  <p> <%= f.text_field :last_name, :required => false, :size => 30 %></p>
   <p> <%= f.text_field :date_created, readonly: true, value: 'auto' %></p>
   <%= f.hidden_field :project_id, :value => @project.object_id %>
 </div>
 
+<fieldset><legend><%= l(:label_custom_fields) %></legend>
+  <p>load custom fields here</p>
+</fieldset>
+</div>
+
+<fieldset><legend><%= l(:label_attachment_plural) %></legend>
+  <p><%= render :partial => 'attachments/form', :locals => {:container => @econtact} %></p>
+</fieldset>
+</div>
+
+
 <!-- load custom fields, see: issue_custom_field_ids -->
+<!--  < %= render :partial => 'easy_contacts/form', :locals => {:f => f} % > -->

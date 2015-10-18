@@ -32,7 +32,6 @@ class EasyContactsController < ApplicationController
 
   def show
     @project = Project.find_by_identifier(params[:project_id])
-
     @econtact = EasyContact.find(params[:id])
     respond_to do |format|
       format.html
@@ -82,11 +81,13 @@ class EasyContactsController < ApplicationController
     @econtact = EasyContact.find(params[:id])
 
     respond_to do |format|
-      if @econtact.update_attributes(params[:easy_contact])
-        format.html { redirect_to action: 'show', id: @econtact.id, notice: 'Contact record was successfully updated.' }
+      if @econtact.update_attributes({first_name: params[:easy_contact][:first_name], last_name: params[:easy_contact][:last_name]})
+        flash[:notice] = l(:notice_contact_record_update)
+        format.html { redirect_to action: 'show', id: @econtact.id }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
+        flash[:error] = l(:err_contact_record_not_updated)
+        format.html { render action: 'edit' }
         format.json { render json: @econtact.errors, status: :unprocessable_entity }
       end
     end
@@ -98,7 +99,7 @@ class EasyContactsController < ApplicationController
     respond_to do |format|
       if @econtact.destroy
         flash[:notice] = l(:notice_contact_record_deleted)
-        format.html { redirect_to action: "index" }
+        format.html { redirect_to action: 'index' }
         format.json { head :no_content }
       else
         flash[:error] = l(:err_contact_record_not_deleted)
