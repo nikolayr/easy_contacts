@@ -17,13 +17,16 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- add journal
- attach files
- add contacts creation to activty
+ add activity journal records
+
+
+<p class="pagination"><span class="items">(0-0/0)</span> </p>
+
  add custom fields
  add custom query to contacts#index
  make contacts searchable
  check entries creation for new nonAdmin user
+ set proper access right for attach view and delete (see attachments_visible? attachments_deletable? in easycontact )
 
  ?add project id to contacts, sort out by projectid when showing all contacts
 

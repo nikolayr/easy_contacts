@@ -112,7 +112,7 @@ class EasyContactsController < ApplicationController
         format.json { head :no_content }
       else
         flash[:error] = l(:err_contact_record_not_deleted)
-        format.html { redirect_to easy_contacts_url }
+        format.html { redirect_to action: 'index' }
         format.json { head :no_content }
       end
 
@@ -120,7 +120,6 @@ class EasyContactsController < ApplicationController
   end
 
   private
-
 
   def find_easy_contact(item_id, proj)
     @econtact = EasyContact.find(item_id)

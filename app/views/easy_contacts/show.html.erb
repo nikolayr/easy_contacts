@@ -19,9 +19,11 @@
       <p>load custom fields here</p>
     </fieldset>
 
-    <fieldset><legend><%= l(:label_attachment_plural) %></legend>
-      <%= link_to_attachments @econtact, :thumbnails => true %>
-    </fieldset>
+    <% if @econtact.attachments.any? %>
+        <fieldset><legend><%= l(:label_attachment_plural) %></legend>
+          <%= link_to_attachments @econtact, :thumbnails => true %>
+        </fieldset>
+    <% end %>
 
     <div class="contextual" style="float:left;">
 

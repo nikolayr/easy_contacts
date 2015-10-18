@@ -27,6 +27,10 @@ class EasyContact < ActiveRecord::Base
            },
            :readonly => true
 
+
+  #attr_accessor :custom_field_values, :custom_fields
+  #safe_attributes 'custom_field_values', 'custom_fields'
+
 =begin
   acts_as_customizable
   has_and_belongs_to_many :contacts_custom_fields,
@@ -45,6 +49,8 @@ class EasyContact < ActiveRecord::Base
 # Saves the changes in a Journal
 # Called after_save
   def create_journal
+
+    custom_field_values = [] #stub
     if @current_journal
       # attributes changes
       if @attributes_before_change
@@ -104,7 +110,7 @@ class EasyContact < ActiveRecord::Base
     else
       @attributes_before_change = attributes.dup
       @custom_values_before_change = {}
-      self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
+      #self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
     end
     @current_journal
   end
@@ -121,10 +127,14 @@ class EasyContact < ActiveRecord::Base
 
 # Callback on attachment deletion
   def attachment_removed(obj)
+=begin
     if @current_journal && !obj.new_record?
       @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :old_value => obj.filename)
       @current_journal.save
     end
+=end
+    puts "attachment_removed"
+
   end
 
 
@@ -136,7 +146,7 @@ class EasyContact < ActiveRecord::Base
     true
   end
 
-  def attachments_deletable?
+  def attachments_deletable?(user = User.current)
     true
   end
 
