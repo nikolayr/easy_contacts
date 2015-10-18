@@ -5,7 +5,8 @@ Create Contact plugin into Redmine. All work is done only in plugin.
 contacts. Index (list) will be via custom query.
 (create class contact query inherited from query)
 
--  model Contact has these attributes: first name, last name and timestamps. You should also define custom fields and attach files
+-  model Contact has these attributes: first name, last name and timestamps.
+   You should also define custom fields and attach files
 
 -  index is accesible through project menu
 
@@ -17,14 +18,17 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- add activity journal records
-
-
-<p class="pagination"><span class="items">(0-0/0)</span> </p>
+ add activity records for contact creation
 
  add custom fields
  add custom query to contacts#index
+ add pagination
+
  make contacts searchable
+
+ research atachments/_links for .js deletion of newly added attachments
+
+
  check entries creation for new nonAdmin user
  set proper access right for attach view and delete (see attachments_visible? attachments_deletable? in easycontact )
 
