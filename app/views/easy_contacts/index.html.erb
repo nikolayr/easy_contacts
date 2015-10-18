@@ -18,11 +18,11 @@
 
   <% @econtacts.each do |i| %>
       <tr>
-        <td><%= i.first_name %></td>
+        <td><%= link_to i.first_name, controller: 'easy_contacts', action: 'show', id: i %></td>
         <td><%= i.last_name %></td>
         <td><%= i.date_created %></td>
-        <td><%= link_to 'Show', controller: 'easy_contacts', action: 'show', id: i %></td>
-        <td><%= link_to 'Edit', controller: 'easy_contacts', action: 'edit', id: i %></td>
+        <td></td>
+        <td><%= link_to l(:button_edit), {controller: 'easy_contacts', action: 'edit', id: i},:class => 'icon icon-edit' %></td>
         <td><%= delete_link("easy_contacts/#{i.id}" ) %></td>
       </tr>
   <% end %>

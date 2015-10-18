@@ -18,7 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- add activity records for contact creation
+ add activity records for contact creation (acts_as_activity_provider)
 
  add custom fields
  add custom query to contacts#index
