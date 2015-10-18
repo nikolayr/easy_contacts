@@ -18,11 +18,12 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- add edit
- add contacts creation to activty
  attach files
+ add contacts creation to activty
  add custom fields
  add custom query to contacts#index
+ make contacts searchable
+ check entries creation for new nonAdmin user
 
  ?add project id to contacts, sort out by projectid when showing all contacts
 
