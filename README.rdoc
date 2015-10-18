@@ -1,5 +1,4 @@
 = easy_contacts
-
 Create Contact plugin into Redmine. All work is done only in plugin.
 
 -  create fully REST controller with associated views for creating, updating and deleting
@@ -32,7 +31,7 @@ contacts. Index (list) will be via custom query.
 
 - installation
 
-> bundle exec rake redmine:plugins:migrate
+> bundle exec rake redmine:plugins:migrate [RAILS_ENV=production]
 
 > then enable plugin within projects settings
 
@@ -42,4 +41,3 @@ contacts. Index (list) will be via custom query.
 
 more info on plugin creation can be found at:
 www.redmine.org/projects/redmine/wiki/Plugin_Tutorial
-

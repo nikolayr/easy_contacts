@@ -9,13 +9,12 @@ Redmine::Plugin.register :easy_contacts do
 
   project_module :easy_contacts do
     permission :view_easy_contacts, :easy_contacts => :index
+    permission :create_easy_contacts, :easy_contacts => :new
   end
-
 
   settings :default => { :easy_contacts_enabled => true}
 #  ,:partial => 'settings/easy_contacts_settings'
 
   menu :project_menu, :easy_contacts , { :controller => 'easy_contacts', :action => 'index'}, :caption => (:easy_contacts_proj_menu_str) , :param => :project_id, :after => :settings
-
 
 end
