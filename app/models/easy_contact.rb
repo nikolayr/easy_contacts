@@ -181,7 +181,15 @@ class EasyContact < ActiveRecord::Base
     true
   end
 
+  def author(*p)
+    1
+  end
+
+  def filename(*p)
+    "att1.txt"
+  end
+
   def created_on(*p)
-    self.date_created.to_date
+    self.date_created
   end
 end
