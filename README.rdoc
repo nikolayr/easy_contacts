@@ -26,13 +26,8 @@ contacts. Index (list) will be via custom query.
 
  make contacts searchable
 
+ sort out by projectid when showing all contacts
  research atachments/_links for .js deletion of newly added attachments
-
- add permissions to view and creating contacts entries 
- checm entries creation for new nonAdmin user
- set proper access right for attach view and delete (see attachments_visible? attachments_deletable? in easycontact )
-
- ?add project id to contacts, sort out by projectid when showing all contacts
 
 
 ---

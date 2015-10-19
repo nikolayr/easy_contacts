@@ -14,9 +14,12 @@ class EasyContact < ActiveRecord::Base
   #acts_as_attachable :view_permission => :attachments_sets, :delete_permission => :attachments_sets
 
   acts_as_attachable :after_add => :attachment_added,
-                     :after_remove => :attachment_removed,
+                     :after_remove => :attachment_removed
+=begin
+  ,
                      :view_permission => :view_easy_contacts_attachments,
                      :delete_permission => :delete_easy_contacts_attachments
+=end
 
   has_many :journals, :as => :journalized, :dependent => :destroy
   has_many :visible_journals,
@@ -143,11 +146,14 @@ class EasyContact < ActiveRecord::Base
   end
 
   def attachments_visible?(user)
-    true
+    #User.current.allowed_to?
+    #User.current.logged?
+    User.current.allowed_to?(:view_easy_contacts_attachments, Project.find(self.project_id))
   end
 
   def attachments_deletable?(user = User.current)
-    true
+    #User.current.logged?
+    User.current.allowed_to?(:delete_easy_contacts_attachments, Project.find(self.project_id))
   end
 
 end

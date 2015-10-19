@@ -1,25 +1,20 @@
 class EasyContactsController < ApplicationController
 
-  helper :projects
-  include ProjectsHelper
+#  default_search_scope :easy_contacts
+  before_filter :authorize#, :except => [:index]
+  before_filter :find_project, :authorize, :only => :index
+
+  accept_api_auth :index, :show, :create, :update, :destroy
+
+
   helper :custom_fields
   include CustomFieldsHelper
-  helper :issue_relations
-  include IssueRelationsHelper
-  helper :watchers
-  include WatchersHelper
   helper :attachments
   include AttachmentsHelper
   helper :queries
   include QueriesHelper
-  helper :repositories
-  include RepositoriesHelper
   helper :sort
   include SortHelper
-
-  accept_api_auth :index, :show, :create, :update, :destroy
-
-  before_filter :find_project, :authorize, :only => :index
 
   def index
     @econtacts = EasyContact.all

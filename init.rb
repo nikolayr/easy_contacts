@@ -10,10 +10,7 @@ Redmine::Plugin.register :easy_contacts do
   project_module :easy_contacts do
     permission :view_easy_contacts, :easy_contacts => :index
     permission :view_easy_contacts_attachments, :attachments => :index
-    permission :delete_easy_contacts_attachments, :attachments => :delete
-    permission :attachments_sets, {:attachments_sets => [:edit]}, :public => true
-    permission :view_easy_contacts_attachments, {:attachments_sets => [:edit]}, :public => true
-
+    permission :delete_easy_contacts_attachments, :attachments => :destroy
   end
 
   settings :default => { :easy_contacts_enabled => true}
