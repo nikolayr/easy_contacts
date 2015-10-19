@@ -13,6 +13,10 @@ Redmine::Plugin.register :easy_contacts do
     permission :delete_easy_contacts_attachments, :attachments => :destroy
   end
 
+  Redmine::Activity.map do |activity|
+    activity.register(:easy_contact_created,{:class_name => 'EasyContact'})
+  end
+
   settings :default => { :easy_contacts_enabled => true}
 #  ,:partial => 'settings/easy_contacts_settings'
 

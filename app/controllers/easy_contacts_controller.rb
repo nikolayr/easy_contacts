@@ -57,7 +57,7 @@ class EasyContactsController < ApplicationController
     # possible to use strong parameters params[:easy_contact].permit(:first_name,:last_name,:date_created)
     @econtact = EasyContact.new({:first_name => params[:easy_contact][:first_name],
                                  :last_name=>params[:easy_contact][:last_name],
-                                 :project_id=>params[:project_id]})
+                                 :project_id=>Project.find_by_identifier(params[:project_id]).id})
 #                                 :date_created=>},
 #                                 :project_id=>)
 
@@ -85,7 +85,7 @@ class EasyContactsController < ApplicationController
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 
     respond_to do |format|
-      if @econtact.update_attributes({first_name: params[:easy_contact][:first_name], last_name: params[:easy_contact][:last_name]})
+      if @econtact.update_attributes({first_name: params[:easy_contact][:first_name], last_name: params[:easy_contact][:last_name], project_id: @project.id})
         flash[:notice] = l(:notice_contact_record_update)
         format.html { redirect_to action: 'show', id: @econtact.id }
         format.json { head :no_content }

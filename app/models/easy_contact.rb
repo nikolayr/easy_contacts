@@ -11,25 +11,13 @@ class EasyContact < ActiveRecord::Base
   before_save :generate_timestamp
   after_save :create_journal
 
-  #acts_as_attachable :view_permission => :attachments_sets, :delete_permission => :attachments_sets
+  #validators
+  #validates_presence_of :first_name
+  #validates_length_of :first_name, :maximum => 30
+
 
   acts_as_attachable :after_add => :attachment_added,
                      :after_remove => :attachment_removed
-=begin
-  ,
-                     :view_permission => :view_easy_contacts_attachments,
-                     :delete_permission => :delete_easy_contacts_attachments
-=end
-
-  has_many :journals, :as => :journalized, :dependent => :destroy
-  has_many :visible_journals,
-           :class_name => 'Journal',
-           :as => :journalized,
-           :conditions => Proc.new {
-             ["(#{Journal.table_name}.private_notes = ? OR (#{Project.allowed_to_condition(User.current, :view_private_notes)}))", false]
-           },
-           :readonly => true
-
 
   #attr_accessor :custom_field_values, :custom_fields
   #safe_attributes 'custom_field_values', 'custom_fields'
@@ -43,17 +31,44 @@ class EasyContact < ActiveRecord::Base
                           :association_foreign_key => 'custom_field_id'
 =end
 
-  acts_as_searchable :columns => ['first_name', 'last_name'], :project_key => 'id', :permission => nil
+  acts_as_searchable :columns => ['first_name', 'last_name', 'date_created'],
+                     :project_key => 'project_id',
+                     :date_column => 'date_created',
+                     :sort_order  => 'date_created',
+                     :permission => :view_easy_contacts
+# 2do refine project id  :project_key => "#{Repository.table_name}.project_id",
 
-  acts_as_event :title => Proc.new {|o| "#{l(:label_custom_contact)}: #{o.first_name}"},
-                :url => Proc.new {|o| {:controller => 'easy_contacts', :action => 'show', :id => o}},
-                :author => nil
+  acts_as_activity_provider :type => 'easy_contact_created',
+                            :author_key => nil,
+#                            :find_options => {:include => [:first_name, :last_name]},
+                            :find_options => {:select => "#{EasyContact.table_name}.*",
+                                              :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id"},
+                            :timestamp => "#{table_name}.date_created"
+# refine activity
+#  https://www.redmine.org/boards/3/topics/32790
+
+  acts_as_event :title => :filename,
+                :url => Proc.new {|o| {:controller => 'easy_contacts',
+                                       :action => 'show',
+                                       :id => o.id}}
+                                    #, :filename => o.filename}}
+
+
+=begin
+  acts_as_activity_provider :type => 'easy_contact_created',
+                            :permission => :view_documents,
+                            :author_key => :author_id,
+                            :find_options => {:select => "#{EasyContact.table_name}.*",
+                                              :joins => "LEFT JOIN #{Document.table_name} ON #{Attachment.table_name}.container_type='Document' AND #{Document.table_name}.id = #{Attachment.table_name}.container_id " +
+                                                  "LEFT JOIN #{Project.table_name} ON #{Document.table_name}.project_id = #{Project.table_name}.id"}
+
+=end
 
 # Saves the changes in a Journal
 # Called after_save
   def create_journal
 
-    custom_field_values = [] #stub
+    custom_field_values = [] #2do reove this stub
     if @current_journal
       # attributes changes
       if @attributes_before_change
@@ -156,4 +171,17 @@ class EasyContact < ActiveRecord::Base
     User.current.allowed_to?(:delete_easy_contacts_attachments, Project.find(self.project_id))
   end
 
+
+  def find_events(event_type, user, from, to, options)
+    puts "meow"
+  end
+
+  def visible?(user, *options)
+    # 2do add access check for activity
+    true
+  end
+
+  def created_on(*p)
+    self.date_created.to_date
+  end
 end
