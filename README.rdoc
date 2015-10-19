@@ -18,7 +18,8 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- format_activity_title app/views/activities/index.html.erb:13:
+ !!! take activity from journal
+
  add activity records for contact creation (acts_as_activity_provider)
 
  add custom fields
