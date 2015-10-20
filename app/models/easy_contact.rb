@@ -47,11 +47,9 @@ class EasyContact < ActiveRecord::Base
 # refine activity
 #  https://www.redmine.org/boards/3/topics/32790
 
-  acts_as_event :title => :filename,
-                :url => Proc.new {|o| {:controller => 'easy_contacts',
-                                       :action => 'show',
-                                       :id => o.id}}
-                                    #, :filename => o.filename}}
+  acts_as_event :title => :get_activity_title,
+                :url => :get_activity_url
+
 
 
 =begin
@@ -171,25 +169,34 @@ class EasyContact < ActiveRecord::Base
     User.current.allowed_to?(:delete_easy_contacts_attachments, Project.find(self.project_id))
   end
 
-
-  def find_events(event_type, user, from, to, options)
-    puts "meow"
-  end
-
   def visible?(user, *options)
     # 2do add access check for activity
     true
   end
 
   def author(*p)
-    1
+    if self.author_id == 0
+      l(:label_user_anonymous)
+    else
+      User.find(self.author_id).name(:firstname_lastname)
+    end
   end
 
-  def filename(*p)
-    "att1.txt"
+  def get_activity_title(*p)
+    l(:activity_ec_title,:first_name=>self.first_name,:last_name=>self.last_name)
   end
+
+  def get_activity_url(*p)
+#    {url: "projects/#{Project.find(self.project_id)}/easy_contacts/#{self.id}"}
+    {controller: 'easy_contacts', action: 'index', id: self.id}
+  end
+
 
   def created_on(*p)
     self.date_created
+  end
+
+  def description(*p)
+    l(:activity_easy_contact_description)
   end
 end

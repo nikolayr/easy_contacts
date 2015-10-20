@@ -5,7 +5,8 @@
 #post "easy_contacts/new(.:format)" => "easy_contacts#create"
 #delete "easy_contacts/:id(.:format)" => "easy_contacts#destroy"
 
-get "easy_contacts/:id(.format)" =>"easy_contacts#show"
+get "easy_contacts/:id" =>"easy_contacts#index"
+
 
 get "projects/:project_id/easy_contacts(.:format)" => "easy_contacts#index"
 get "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#new"
@@ -15,6 +16,7 @@ get "projects/:project_id/easy_contacts/:id/edit(.:format)" => "easy_contacts#ed
 post "projects/:project_id/easy_contacts/:id/edit(.:format)" => "easy_contacts#update"
 put "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#update"
 delete "projects/:project_id/easy_contacts/:id(.:format)" => "easy_contacts#destroy"
+
 
 
 #   products GET    /products(.:format)          products#index
