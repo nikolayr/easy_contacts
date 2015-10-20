@@ -18,8 +18,9 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- !!! take activity from journal
-
+ !!! add description
+ add scope :visible (because: Add a visible scope to the EasyContact model or use explicit :permission option)
+ 
  add activity records for contact creation (acts_as_activity_provider)
 
  add custom fields
