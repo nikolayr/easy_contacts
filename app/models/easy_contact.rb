@@ -187,10 +187,8 @@ class EasyContact < ActiveRecord::Base
   end
 
   def get_activity_url(*p)
-#    {url: "projects/#{Project.find(self.project_id)}/easy_contacts/#{self.id}"}
-    {controller: 'easy_contacts', action: 'index', id: self.id}
+    {controller: 'easy_contacts', action: 'show', id: self.id}
   end
-
 
   def created_on(*p)
     self.date_created

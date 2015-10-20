@@ -5,8 +5,11 @@
 #post "easy_contacts/new(.:format)" => "easy_contacts#create"
 #delete "easy_contacts/:id(.:format)" => "easy_contacts#destroy"
 
-get "easy_contacts/:id" =>"easy_contacts#index"
-
+#get "easy_contacts/:id" =>"easy_contacts#show"
+get 'easy_contacts/:id', to: redirect { |params, request|
+                     ec = EasyContact.find(params[:id])
+                     "http://#{request.host_with_port}/projects/#{Project.find(ec.project_id)}/easy_contacts/#{ec.id}"
+                   }
 
 get "projects/:project_id/easy_contacts(.:format)" => "easy_contacts#index"
 get "projects/:project_id/easy_contacts/new(.:format)" => "easy_contacts#new"
