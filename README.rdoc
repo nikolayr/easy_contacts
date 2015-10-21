@@ -23,6 +23,8 @@ contacts. Index (list) will be via custom query.
  rename activity_ec_title to Contact #%{id}: %{first_name} %{last_name}
  romove puts in def easy_contact_path
  restore custom_field_values and custom_fields vars in controller
+ add def all_issue_custom_fields as all_contact_custom_fields
+
  add custom fields
  add custom query to contacts#index
  add pagination
