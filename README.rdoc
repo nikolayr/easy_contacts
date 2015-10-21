@@ -18,6 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+ add custom field records for contacts custom_fields_tabs
  read more custom_fields_helper
  restore custom_field_values and custom_fields vars in controller
  add def all_issue_custom_fields as all_contact_custom_fields
