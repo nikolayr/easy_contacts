@@ -6,7 +6,6 @@ class EasyContactsController < ApplicationController
 
   accept_api_auth :index, :show, :create, :update, :destroy
 
-
   helper :custom_fields
   include CustomFieldsHelper
   helper :attachments
@@ -36,9 +35,10 @@ class EasyContactsController < ApplicationController
 
   def new
     @project = Project.find_by_identifier(params[:project_id])
-
     @econtact = EasyContact.new
     @econtact.project_id = @project.id
+
+    @econtact.init_custom_flds
 
     respond_to do |format|
       format.html
@@ -50,6 +50,9 @@ class EasyContactsController < ApplicationController
     @project = Project.find_by_identifier(params[:project_id])
     @econtact = EasyContact.find(params[:id])
     @econtact.project_id = @project.id if @econtact.project_id == 0
+
+    @econtact.init_custom_fields
+
   end
 
   def create
@@ -57,9 +60,14 @@ class EasyContactsController < ApplicationController
     # possible to use strong parameters params[:easy_contact].permit(:first_name,:last_name,:date_created)
     @econtact = EasyContact.new({:first_name => params[:easy_contact][:first_name],
                                  :last_name=>params[:easy_contact][:last_name],
-                                 :project_id=>Project.find_by_identifier(params[:project_id]).id})
+                                 :project_id=>Project.find_by_identifier(params[:project_id]).id},
+                                 :author_id=>User.current.id)
 #                                 :date_created=>},
 #                                 :project_id=>)
+
+    # TODO add custom fields to model
+    @econtact.init_custom_flds
+
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 
@@ -80,6 +88,10 @@ class EasyContactsController < ApplicationController
     @project = Project.find_by_identifier(params[:project_id])
     @econtact = EasyContact.find(params[:id])
     @econtact.project_id = @project.id if @econtact.project_id == 0
+
+    #TODO load custom fields values
+#    init_custom_fields(@econtact)
+
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 

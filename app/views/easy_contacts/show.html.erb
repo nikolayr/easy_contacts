@@ -9,17 +9,13 @@
       <p> <%= f.text_field :date_created,readonly: true, value: @econtact.date_created %></p>
     </div>
 
+    <% unless @econtact.custom_field_values.nil? %>
     <fieldset><legend><%= l(:label_custom_fields) %></legend>
-<!--      <p>load custom fields here</p> -->
-      <% unless @econtact.custom_field_values.nil? %>
           <% @econtact.custom_field_values.each do |value| %>
               <p><%= custom_field_tag_with_label :easy_contact, value %></p>
           <% end %>
-      <% else %>
-          <p>add more custom fields in plugin settings</p>
-      <% end %>
-
     </fieldset>
+    <% end %>
 
     <% if @econtact.attachments.any? %>
         <fieldset><legend><%= l(:label_attachment_plural) %></legend>

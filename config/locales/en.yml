@@ -21,5 +21,6 @@ en:
   show_all_easy_contact:          "Show all"
   easy_contact_snglr:             "Contact"
   label_custom_fields:            "Custom fields"
-  activity_ec_title:              "New contact: %{first_name} %{last_name}"
+  activity_ec_title:              "Contact #%{id}: %{first_name} %{last_name}"
   activity_easy_contact_description: ""
+  label_ec_plural:                "Contacts"

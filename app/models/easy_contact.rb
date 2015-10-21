@@ -8,14 +8,16 @@ end
 class EasyContact < ActiveRecord::Base
   include Redmine::SafeAttributes
 
+  before_save :init_custom_flds
   before_save :generate_timestamp
   after_save :create_journal
 
-  #validators
-  #validates_presence_of :first_name
-  #validates_length_of :first_name, :maximum => 30
+  validates_presence_of :first_name
+  validates_length_of :first_name, :maximum => 30
+  validates_length_of :last_name, :maximum => 30
 
 
+  safe_attributes 'first_name', 'last_name'
   acts_as_attachable :after_add => :attachment_added,
                      :after_remove => :attachment_removed
 
@@ -28,6 +30,7 @@ class EasyContact < ActiveRecord::Base
                           :order => "#{CustomField.table_name}.position",
                           :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
                           :association_foreign_key => 'custom_field_id'
+
 
 # 2do review search functionality
   acts_as_searchable :columns => ['first_name', 'last_name', 'date_created'],
@@ -65,6 +68,7 @@ class EasyContact < ActiveRecord::Base
 # Saves the changes in a Journal
 # Called after_save
   def create_journal
+
     if @current_journal
       # attributes changes
       if @attributes_before_change
@@ -124,7 +128,7 @@ class EasyContact < ActiveRecord::Base
     else
       @attributes_before_change = attributes.dup
       @custom_values_before_change = {}
-      #self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
+      self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
     end
     @current_journal
   end
@@ -172,7 +176,7 @@ class EasyContact < ActiveRecord::Base
   end
 
   def get_activity_title(*p)
-    l(:activity_ec_title,:first_name=>self.first_name,:last_name=>self.last_name)
+    l(:activity_ec_title,:id=>self.id,:first_name=>self.first_name,:last_name=>self.last_name)
   end
 
   def get_activity_url(*p)
@@ -188,7 +192,7 @@ class EasyContact < ActiveRecord::Base
   end
 
   def safe_attributes(*args)
-
+    puts "safe_attributes call"
   end
 
   # Safely sets attributes
@@ -216,5 +220,36 @@ class EasyContact < ActiveRecord::Base
 
 
   end
+
+  def validate_value(*args)
+    true
+  end
+
+  def init_custom_flds(*args)
+    # init CustomFieldsHelper::CUSTOM_FIELDS_TABS
+    CustomFieldsHelper::CUSTOM_FIELDS_TABS << {:name => 'ContactsCustomFields', :partial => 'custom_fields/index',
+                                               :label => :label_ec_plural}
+    @custom_fields ||= ContactsCustomFields.
+        sorted.
+        where("is_for_all = ? OR id IN (SELECT DISTINCT cfp.custom_field_id" +
+                  " FROM #{table_name_prefix}custom_fields_projects#{table_name_suffix} cfp" +
+                  " WHERE cfp.project_id = ?)", true, project_id)
+
+    puts @custom_fields.class
+
+    # TODO load value
+
+  end
+
+  def validate_custom_field_values
+    unless @custom_field_values.nil?
+      super
+    else
+      init_custom_flds
+      #@custom_field_values = []
+    end
+  end
+
+
 
 end

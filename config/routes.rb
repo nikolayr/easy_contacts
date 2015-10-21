@@ -8,7 +8,7 @@
 #get "easy_contacts/:id" =>"easy_contacts#show"
 get 'easy_contacts/:id', to: redirect { |params, request|
                      ec = EasyContact.find(params[:id])
-                     "http://#{request.host_with_port}/projects/#{Project.find(ec.project_id)}/easy_contacts/#{ec.id}"
+                     "http://#{request.host_with_port}/projects/#{Project.find(ec.project_id).identifier}/easy_contacts/#{ec.id}"
                    }
 
 get "projects/:project_id/easy_contacts(.:format)" => "easy_contacts#index"

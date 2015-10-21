@@ -9,9 +9,13 @@
       <%= f.hidden_field :project_id, :value => @project.object_id %>
     </div>
 
+    <% unless @econtact.custom_field_values.nil? %>
     <fieldset><legend><%= l(:label_custom_fields) %></legend>
-      <p>load custom fields here</p>
+          <% @econtact.custom_field_values.each do |value| %>
+              <p><%= custom_field_tag_with_label :easy_contact, value %></p>
+          <% end %>
     </fieldset>
+    <% end %>
 
     <fieldset><legend><%= l(:label_attachment_plural) %></legend>
       <p><%= render :partial => 'attachments/form', :locals => {:container => @econtact} %></p>
