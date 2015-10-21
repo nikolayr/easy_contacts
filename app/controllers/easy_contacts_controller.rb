@@ -79,13 +79,20 @@ class EasyContactsController < ApplicationController
   def update
     @project = Project.find_by_identifier(params[:project_id])
     @econtact = EasyContact.find(params[:id])
-
     @econtact.project_id = @project.id if @econtact.project_id == 0
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 
+    usr_id = User.logged ? User.current.id : 0
+
+    # prepare attr
+    upd_this = {first_name: params[:easy_contact][:first_name],
+                last_name: params[:easy_contact][:last_name],
+                project_id: @project.id,
+                author_id: usr_id}
+
     respond_to do |format|
-      if @econtact.update_attributes({first_name: params[:easy_contact][:first_name], last_name: params[:easy_contact][:last_name], project_id: @project.id})
+      if @econtact.update_attributes(upd_this)
         flash[:notice] = l(:notice_contact_record_update)
         format.html { redirect_to action: 'show', id: @econtact.id }
         format.json { head :no_content }

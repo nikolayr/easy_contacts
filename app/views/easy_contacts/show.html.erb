@@ -1,6 +1,6 @@
 <h2><%= contacts_heading(@econtact) %></h2>
 
-<%= labelled_form_for 'easy_contact' do |f| %>
+<%= labelled_form_for @econtact do |f| %>
 
     <div class="box tabular">
       <!--[form:easy_contacts]-->
@@ -10,7 +10,15 @@
     </div>
 
     <fieldset><legend><%= l(:label_custom_fields) %></legend>
-      <p>load custom fields here</p>
+<!--      <p>load custom fields here</p> -->
+      <% unless @econtact.custom_field_values.nil? %>
+          <% @econtact.custom_field_values.each do |value| %>
+              <p><%= custom_field_tag_with_label :easy_contact, value %></p>
+          <% end %>
+      <% else %>
+          <p>add more custom fields in plugin settings</p>
+      <% end %>
+
     </fieldset>
 
     <% if @econtact.attachments.any? %>

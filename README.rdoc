@@ -18,14 +18,16 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- add scope :visible (because: Add a visible scope to the EasyContact model or use explicit :permission option)
- set proper descriotion for activity (take activity from Journal? )
-
+ restore custom_field_values and custom_fields vars in controller
  add custom fields
  add custom query to contacts#index
  add pagination
 
+ add custom fields management to plugin settings page
+
  make contacts searchable (Redmine::Search.available_search_types)
+
+ set/update author on contact creation
 
  sort out by projectid when showing all contacts
  research atachments/_links for .js deletion of newly added attachments

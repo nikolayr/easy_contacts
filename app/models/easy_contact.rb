@@ -6,7 +6,7 @@ class ContactsCustomFields < CustomField
 end
 
 class EasyContact < ActiveRecord::Base
-  unloadable
+  include Redmine::SafeAttributes
 
   before_save :generate_timestamp
   after_save :create_journal
@@ -19,18 +19,17 @@ class EasyContact < ActiveRecord::Base
   acts_as_attachable :after_add => :attachment_added,
                      :after_remove => :attachment_removed
 
-  #attr_accessor :custom_field_values, :custom_fields
-  #safe_attributes 'custom_field_values', 'custom_fields'
+  attr_accessor :custom_field_values, :custom_fields
+  safe_attributes 'custom_field_values', 'custom_fields'
 
-=begin
   acts_as_customizable
   has_and_belongs_to_many :contacts_custom_fields,
                           :class_name => 'ContactsCustomFields',
                           :order => "#{CustomField.table_name}.position",
                           :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
                           :association_foreign_key => 'custom_field_id'
-=end
 
+# 2do review search functionality
   acts_as_searchable :columns => ['first_name', 'last_name', 'date_created'],
                      :project_key => 'project_id',
                      :date_column => 'date_created',
@@ -40,6 +39,7 @@ class EasyContact < ActiveRecord::Base
 
   acts_as_activity_provider :type => 'easy_contact_created',
                             :author_key => nil,
+                            :permission => :view_easy_contacts,
 #                            :find_options => {:include => [:first_name, :last_name]},
                             :find_options => {:select => "#{EasyContact.table_name}.*",
                                               :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id"},
@@ -65,8 +65,6 @@ class EasyContact < ActiveRecord::Base
 # Saves the changes in a Journal
 # Called after_save
   def create_journal
-
-    custom_field_values = [] #2do reove this stub
     if @current_journal
       # attributes changes
       if @attributes_before_change
@@ -122,7 +120,7 @@ class EasyContact < ActiveRecord::Base
   def init_journal(user, notes = "")
     @current_journal ||= Journal.new(:journalized => self, :user => user, :notes => notes)
     if new_record?
-      @current_journal.notify = true # new issue is not notified? false
+      @current_journal.notify = false
     else
       @attributes_before_change = attributes.dup
       @custom_values_before_change = {}
@@ -136,30 +134,21 @@ class EasyContact < ActiveRecord::Base
   end
 
   def attachment_added(obj)
-    if @current_journal && !obj.new_record?
+    if @current_journal # && !obj.new_record?
       @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :value => obj.filename)
     end
   end
 
 # Callback on attachment deletion
   def attachment_removed(obj)
-=begin
-    if @current_journal && !obj.new_record?
-      @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :old_value => obj.filename)
-      @current_journal.save
-    end
-=end
-    puts "attachment_removed"
-
+    #puts "attachment_removed"
   end
-
 
   def project
     @attributes[:project_id]
   end
 
   def attachments_visible?(user)
-    #User.current.allowed_to?
     #User.current.logged?
     User.current.allowed_to?(:view_easy_contacts_attachments, Project.find(self.project_id))
   end
@@ -197,4 +186,35 @@ class EasyContact < ActiveRecord::Base
   def description(*p)
     l(:activity_easy_contact_description)
   end
+
+  def safe_attributes(*args)
+
+  end
+
+  # Safely sets attributes
+  # Should be called from controllers instead of #attributes=
+  # attr_accessible is too rough because we still want things like
+  # Issue.new(:project => foo) to work
+  def safe_attributes=(attrs, user=User.current)
+    return unless attrs.is_a?(Hash)
+    attrs = attrs.dup
+
+    if attrs['custom_field_values'].present?
+      editable_custom_field_ids = editable_custom_field_values(user).map {|v| v.custom_field_id.to_s}
+      # TODO: use #select when ruby1.8 support is dropped
+      attrs['custom_field_values'] = attrs['custom_field_values'].reject {|k, v| !editable_custom_field_ids.include?(k.to_s)}
+    end
+
+    if attrs['custom_fields'].present?
+      editable_custom_field_ids = editable_custom_field_values(user).map {|v| v.custom_field_id.to_s}
+      # TODO: use #select when ruby1.8 support is dropped
+      attrs['custom_fields'] = attrs['custom_fields'].reject {|c| !editable_custom_field_ids.include?(c['id'].to_s)}
+    end
+
+    # mass-assignment security bypass
+    assign_attributes attrs, :without_protection => true
+
+
+  end
+
 end
