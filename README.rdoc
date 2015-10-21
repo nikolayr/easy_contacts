@@ -18,6 +18,10 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+ add .identifier to Project.find() route
+ add author_id to contact model
+ rename activity_ec_title to Contact #%{id}: %{first_name} %{last_name}
+ romove puts in def easy_contact_path
  restore custom_field_values and custom_fields vars in controller
  add custom fields
  add custom query to contacts#index
