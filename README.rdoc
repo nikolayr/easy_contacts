@@ -18,6 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+ _form_custom_fields.html.erb add ContactCustomField to /custom_fields/new
  add custom field records for contacts custom_fields_tabs
  read more custom_fields_helper
  restore custom_field_values and custom_fields vars in controller
