@@ -18,6 +18,16 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+  load custom fields from custom_fields where
+SQL (1.8ms)  INSERT INTO "custom_fields" ("default_value", "description", "editable", "field_format",
+"format_store", "is_filter", "is_for_all", "is_required", "max_length", "min_length", "multiple", "name",
+"position", "possible_values", "regexp", "searchable", "type", "visible")
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+[["default_value", "0"], ["description", "int for "], ["editable", true], ["field_format", "int"], ["format_store", "---\n:url_pattern: ''\n"],
+["is_filter", false], ["is_for_all", false], ["is_required", false], ["max_length", nil], ["min_length", nil], ["multiple", false], ["name", "cc_int"],
+["position", 2], ["possible_values", "--- \n...\n"], ["regexp", ""], ["searchable", false], ["type", "EasyContactsCustomField"], ["visible", true]]
+
+ custom_field.rb - field_format (validate presence)
  _form_custom_fields.html.erb add ContactCustomField to /custom_fields/new
  add custom field records for contacts custom_fields_tabs
  read more custom_fields_helper

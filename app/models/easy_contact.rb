@@ -19,18 +19,16 @@ class EasyContact < ActiveRecord::Base
 
   acts_as_customizable
 
-=begin
-  has_and_belongs_to_many :easy_contact_custom_field,
-                          :join_table   => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
-                          :after_add => :custom_field_added,
-                          :after_remove => :custom_field_removed
-=end
+  # has_and_belongs_to_many :easy_contacts,
+  #                         :join_table   => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
+  #                         :after_add => :custom_field_added,
+  #                         :after_remove => :custom_field_removed
 
-  # has_and_belongs_to_many :easy_contact_custom_field,
-  #                         :class_name => 'EasyContactsCustomField',
-  #                         :order => "#{CustomField.table_name}.position",
-  #                         :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
-  #                         :association_foreign_key => 'custom_field_id'
+  has_and_belongs_to_many :easy_contacts,
+                          :class_name => 'EasyContactsCustomField',
+                          :order => "#{CustomField.table_name}.position",
+                          :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
+                          :association_foreign_key => 'custom_field_id'
 
 
 # 2do review search functionality
@@ -248,6 +246,12 @@ class EasyContact < ActiveRecord::Base
     end
   end
 
+  def custom_field_added(*args)
 
+  end
+
+  def custom_field_removed(*args)
+
+  end
 
 end

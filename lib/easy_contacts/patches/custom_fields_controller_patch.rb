@@ -16,7 +16,11 @@ module EasyContacts
 
       module InstanceMethods
         def index_with_custom_client_field
-          CustomFieldsHelper::CUSTOM_FIELDS_TABS << {:name => 'EasyContactsCustomField', :partial => 'custom_fields/index',:label => :label_easy_contacts_plural}
+          CustomFieldsHelper::CUSTOM_FIELDS_TABS << {:name => 'EasyContactsCustomField',
+                                                     :partial => 'custom_fields/index',
+                                                     :label => :label_easy_contacts_plural} unless @contact_custom_field_added
+          @contact_custom_field_added = true
+
 =begin
 TODO do not grow CUSTOM_FIELDS_TABS array
           ccf = CustomFieldsHelper::CUSTOM_FIELDS_TABS.select {|h| h[:name] == 'ContactsCustomField'}
