@@ -51,7 +51,7 @@ class EasyContactsController < ApplicationController
     @econtact = EasyContact.find(params[:id])
     @econtact.project_id = @project.id if @econtact.project_id == 0
 
-    @econtact.init_custom_fields
+#    @econtact.init_custom_flds
 
   end
 
@@ -66,7 +66,7 @@ class EasyContactsController < ApplicationController
 #                                 :project_id=>)
 
     # TODO add custom fields to model
-    @econtact.init_custom_flds
+    #@econtact.init_custom_flds
 
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
@@ -90,7 +90,7 @@ class EasyContactsController < ApplicationController
     @econtact.project_id = @project.id if @econtact.project_id == 0
 
     #TODO load custom fields values
-#    init_custom_fields(@econtact)
+#    @econtact.init_custom_flds
 
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))

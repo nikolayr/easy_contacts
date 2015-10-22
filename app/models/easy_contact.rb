@@ -1,10 +1,3 @@
-class ContactsCustomFields < CustomField
-  unloadable
-  def type_name
-    :label_custom_contact
-  end
-end
-
 class EasyContact < ActiveRecord::Base
   include Redmine::SafeAttributes
 
@@ -26,7 +19,7 @@ class EasyContact < ActiveRecord::Base
 
   acts_as_customizable
   has_and_belongs_to_many :contacts_custom_fields,
-                          :class_name => 'ContactsCustomFields',
+                          :class_name => 'EasyContactsCustomField',
                           :order => "#{CustomField.table_name}.position",
                           :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
                           :association_foreign_key => 'custom_field_id'
@@ -218,7 +211,6 @@ class EasyContact < ActiveRecord::Base
     # mass-assignment security bypass
     assign_attributes attrs, :without_protection => true
 
-
   end
 
   def validate_value(*args)
@@ -227,9 +219,7 @@ class EasyContact < ActiveRecord::Base
 
   def init_custom_flds(*args)
     # init CustomFieldsHelper::CUSTOM_FIELDS_TABS
-    CustomFieldsHelper::CUSTOM_FIELDS_TABS << {:name => 'ContactsCustomFields', :partial => 'custom_fields/index',
-                                               :label => :label_ec_plural}
-    @custom_fields ||= ContactsCustomFields.
+    @custom_fields ||= ContactsCustomField.
         sorted.
         where("is_for_all = ? OR id IN (SELECT DISTINCT cfp.custom_field_id" +
                   " FROM #{table_name_prefix}custom_fields_projects#{table_name_suffix} cfp" +

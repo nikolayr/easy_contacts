@@ -24,3 +24,4 @@ en:
   activity_ec_title:              "Contact #%{id}: %{first_name} %{last_name}"
   activity_easy_contact_description: ""
   label_ec_plural:                "Contacts"
+  label_easy_contacts_plural:     "Easy Contacts"
