@@ -18,11 +18,19 @@ class EasyContact < ActiveRecord::Base
   safe_attributes 'custom_field_values', 'custom_fields'
 
   acts_as_customizable
-  has_and_belongs_to_many :contacts_custom_fields,
-                          :class_name => 'EasyContactsCustomField',
-                          :order => "#{CustomField.table_name}.position",
-                          :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
-                          :association_foreign_key => 'custom_field_id'
+
+=begin
+  has_and_belongs_to_many :easy_contact_custom_field,
+                          :join_table   => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
+                          :after_add => :custom_field_added,
+                          :after_remove => :custom_field_removed
+=end
+
+  # has_and_belongs_to_many :easy_contact_custom_field,
+  #                         :class_name => 'EasyContactsCustomField',
+  #                         :order => "#{CustomField.table_name}.position",
+  #                         :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
+  #                         :association_foreign_key => 'custom_field_id'
 
 
 # 2do review search functionality
@@ -219,15 +227,15 @@ class EasyContact < ActiveRecord::Base
 
   def init_custom_flds(*args)
     # init CustomFieldsHelper::CUSTOM_FIELDS_TABS
-    @custom_fields ||= ContactsCustomField.
-        sorted.
-        where("is_for_all = ? OR id IN (SELECT DISTINCT cfp.custom_field_id" +
-                  " FROM #{table_name_prefix}custom_fields_projects#{table_name_suffix} cfp" +
-                  " WHERE cfp.project_id = ?)", true, project_id)
-
-    puts @custom_fields.class
+    @custom_fields = []
+    # @custom_fields ||= ContactsCustomField.
+    #     sorted.
+    #     where("is_for_all = ? OR id IN (SELECT DISTINCT cfp.custom_field_id" +
+    #               " FROM #{table_name_prefix}custom_fields_projects#{table_name_suffix} cfp" +
+    #               " WHERE cfp.project_id = ?)", true, project_id)
 
     # TODO load value
+    @custom_field_values ||=[]
 
   end
 

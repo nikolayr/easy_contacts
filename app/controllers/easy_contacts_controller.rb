@@ -58,12 +58,18 @@ class EasyContactsController < ApplicationController
   def create
     # 2do validate params
     # possible to use strong parameters params[:easy_contact].permit(:first_name,:last_name,:date_created)
-    @econtact = EasyContact.new({:first_name => params[:easy_contact][:first_name],
-                                 :last_name=>params[:easy_contact][:last_name],
-                                 :project_id=>Project.find_by_identifier(params[:project_id]).id},
-                                 :author_id=>User.current.id)
+
+    @project = Project.find_by_identifier(params[:project_id])
+    usr_id = User.logged ? User.current.id : 0
+#params[:easy_contact][:author_id]
+    new_flds = {first_name: params[:easy_contact][:first_name],
+                last_name: params[:easy_contact][:last_name],
+                project_id: @project.id,
+                author_id: usr_id}
 #                                 :date_created=>},
 #                                 :project_id=>)
+
+    @econtact = EasyContact.new(new_flds)
 
     # TODO add custom fields to model
     #@econtact.init_custom_flds
