@@ -18,6 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+ switch to custom_values table
   load custom fields from custom_fields where
 SQL (1.8ms)  INSERT INTO "custom_fields" ("default_value", "description", "editable", "field_format",
 "format_store", "is_filter", "is_for_all", "is_required", "max_length", "min_length", "multiple", "name",
@@ -40,7 +41,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
  add custom query to contacts#index
  add pagination
 
- add custom fields management to plugin settings page
+ set acts_as_activity_provider within easy_contact model
 
  make contacts searchable (Redmine::Search.available_search_types)
 
