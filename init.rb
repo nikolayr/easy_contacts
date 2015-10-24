@@ -22,8 +22,8 @@ end
 
 ActionDispatch::Callbacks.to_prepare do
   require_dependency 'custom_fields_helper'
-  unless CustomFieldsHelper.included_modules.include?(EasyContacts::Patches::CustomFieldsControllerPatch)
-    CustomFieldsHelper.send(:include, EasyContacts::Patches::CustomFieldsControllerPatch)
+  unless CustomFieldsHelper.included_modules.include?(EasyContacts::Patches::CustomFieldsHelperPatch)
+    CustomFieldsHelper.send(:include, EasyContacts::Patches::CustomFieldsHelperPatch)
   end
 end
 

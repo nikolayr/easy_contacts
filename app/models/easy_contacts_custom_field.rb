@@ -1,5 +1,5 @@
 class EasyContactsCustomField < CustomField
-  has_and_belongs_to_many :easy_contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
+#  has_and_belongs_to_many :easy_contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
   has_many :easy_contacts, :through => :contacts_custom_values
 
   def type_name
@@ -12,7 +12,7 @@ class EasyContactsCustomField < CustomField
   end
 
   def visibility_by_project_condition(project_key=nil, user=User.current, id_column=nil)
-    super
+    true
     # sql = super
     # id_column ||= id
     #
