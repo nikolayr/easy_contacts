@@ -21,9 +21,9 @@ Redmine::Plugin.register :easy_contacts do
 end
 
 ActionDispatch::Callbacks.to_prepare do
-  require_dependency 'custom_fields_helper'
-  unless CustomFieldsHelper.included_modules.include?(EasyContacts::Patches::CustomFieldsHelperPatch)
-    CustomFieldsHelper.send(:include, EasyContacts::Patches::CustomFieldsHelperPatch)
+  require_dependency 'custom_fields_controller'
+  unless CustomFieldsController.included_modules.include?(EasyContacts::Patches::CustomFieldsControllerPatch)
+    CustomFieldsController.send(:include, EasyContacts::Patches::CustomFieldsControllerPatch)
   end
 end
 

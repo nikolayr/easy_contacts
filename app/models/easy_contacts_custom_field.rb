@@ -1,6 +1,5 @@
 class EasyContactsCustomField < CustomField
-#  has_and_belongs_to_many :easy_contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
-  has_many :easy_contacts, :through => :contacts_custom_values
+  has_and_belongs_to_many :easy_contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
 
   def type_name
     :label_easy_contacts_plural
@@ -22,9 +21,18 @@ class EasyContactsCustomField < CustomField
     # "((#{sql}) AND (#{project_condition}))"
   end
 
-  def validate_custom_field
+  def validate_custom_field(*args)
     super
     errors.add(:base, l(:label_role_plural) + ' ' + l('activerecord.errors.messages.blank')) unless visible?
+  end
+
+  def custom_field(*args)
+    puts "custom field call"
+    self
+  end
+
+  def value(*args)
+    0
   end
 
 end

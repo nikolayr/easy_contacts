@@ -17,6 +17,8 @@ class EasyContactsController < ApplicationController
 
   def index
     @econtacts = EasyContact.all
+    @econtact.init_custom_flds
+
     respond_to do |format|
       format.html 
       format.json { render json: @econtacts }
@@ -26,6 +28,7 @@ class EasyContactsController < ApplicationController
   def show
     @project = Project.find_by_identifier(params[:project_id])
     @econtact = EasyContact.find(params[:id])
+    @econtact.init_custom_flds
 
     respond_to do |format|
       format.html

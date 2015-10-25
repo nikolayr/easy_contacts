@@ -1,13 +1,13 @@
 module EasyContacts
   module Patches
-    module CustomFieldsHelperPatch
+    module CustomFieldsControllerPatch
       def self.included(base) # :nodoc:
         @bbb ||= base
         base.extend(ClassMethods)
         base.send(:include, InstanceMethods)
 
         base.class_eval do
-#          alias_method_chain :initialize, :add_custom_contact_tab
+          alias_method_chain :index, :add_custom_contact_tab
 #          alias_method_chain :custom_field_type_options, :custom_client_field
         end
       end
@@ -17,10 +17,10 @@ module EasyContacts
 
       module InstanceMethods
 
-        # def initialize_with_add_custom_contact_tab(*args)
-        #   puts "pre init CustomFieldsHelper::CUSTOM_FIELDS_TABS.size:#{CustomFieldsHelper::CUSTOM_FIELDS_TABS.size}"
-        #   easy_contact_field_tab
-        # end
+        def index_with_add_custom_contact_tab(*args)
+          easy_contact_field_tab
+        end
+
         #redef const in module
         def redef_without_warning(const, value)
           @bbb.class.send(:remove_const, const) if @bbb.class.const_defined?(const)

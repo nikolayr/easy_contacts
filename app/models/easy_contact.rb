@@ -1,7 +1,8 @@
 class EasyContact < ActiveRecord::Base
   include Redmine::SafeAttributes
 
-  before_save :init_custom_flds
+  before_create :init_custom_flds
+#  before_save :init_custom_flds
   before_save :generate_timestamp
   after_save :create_journal
 
@@ -18,13 +19,8 @@ class EasyContact < ActiveRecord::Base
   safe_attributes 'custom_field_values', 'custom_fields'
 
   acts_as_customizable
-
-  # has_and_belongs_to_many :easy_contacts,
-  #                         :join_table   => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
-  #                         :after_add => :custom_field_added,
-  #                         :after_remove => :custom_field_removed
-
-  has_and_belongs_to_many :easy_contacts,
+  #:easy_contacts_custom_field :easy_contacts
+  has_and_belongs_to_many :easy_contacts_custom_field,
                           :class_name => 'EasyContactsCustomField',
                           :order => "#{CustomField.table_name}.position",
                           :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
@@ -224,34 +220,27 @@ class EasyContact < ActiveRecord::Base
   end
 
   def init_custom_flds(*args)
-    # init CustomFieldsHelper::CUSTOM_FIELDS_TABS
-    @custom_fields = []
-    # @custom_fields ||= ContactsCustomField.
-    #     sorted.
-    #     where("is_for_all = ? OR id IN (SELECT DISTINCT cfp.custom_field_id" +
-    #               " FROM #{table_name_prefix}custom_fields_projects#{table_name_suffix} cfp" +
-    #               " WHERE cfp.project_id = ?)", true, project_id)
+    puts "initing custom_flds for EasyContactsCustomField"
+    @custom_fields ||= EasyContactsCustomField.where("type='EasyContactsCustomField' and project_id=?",project_id)
 
     # TODO load value
     @custom_field_values ||=[]
-
   end
 
   def validate_custom_field_values
     unless @custom_field_values.nil?
       super
     else
-      init_custom_flds
-      #@custom_field_values = []
+      # validate custom fields
+      #??? @custom_field_values.map(&:validate)
     end
   end
 
-  def custom_field_added(*args)
-
+  # Overrides Redmine::Acts::Customizable::InstanceMethods#available_custom_fields
+  def available_custom_fields
+    puts "available_custom_fields has #{@custom_fields.size} fields"
+    @custom_fields
   end
 
-  def custom_field_removed(*args)
-
-  end
 
 end

@@ -18,6 +18,8 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+ review custom_fields/index template (why it's not showing my
+
  switch to custom_values table
   load custom fields from custom_fields where
 SQL (1.8ms)  INSERT INTO "custom_fields" ("default_value", "description", "editable", "field_format",
