@@ -27,12 +27,11 @@ class EasyContactsCustomField < CustomField
   end
 
   def custom_field(*args)
-    puts "custom field call"
     self
   end
 
   def value(*args)
-    0
+    self.default_value
   end
 
 end

@@ -2,9 +2,7 @@ class EasyContact < ActiveRecord::Base
   include Redmine::SafeAttributes
 
   before_create :init_custom_flds
-#  before_save :init_custom_flds
   before_save :generate_timestamp
-  after_save :create_journal
 
   validates_presence_of :first_name
   validates_length_of :first_name, :maximum => 30
@@ -63,57 +61,7 @@ class EasyContact < ActiveRecord::Base
 # Saves the changes in a Journal
 # Called after_save
   def create_journal
-
-    if @current_journal
-      # attributes changes
-      if @attributes_before_change
-        (Issue.column_names - %w(id first_name last_name date_created)).each {|c|
-          before = @attributes_before_change[c]
-          after = send(c)
-          next if before == after || (before.blank? && after.blank?)
-          @current_journal.details << JournalDetail.new(:property => 'attr',
-                                                        :prop_key => c,
-                                                        :old_value => before,
-                                                        :value => after)
-        }
-      end
-      if @custom_values_before_change
-        # custom fields changes
-        custom_field_values.each {|c|
-          before = @custom_values_before_change[c.custom_field_id]
-          after = c.value
-          next if before == after || (before.blank? && after.blank?)
-
-          if before.is_a?(Array) || after.is_a?(Array)
-            before = [before] unless before.is_a?(Array)
-            after = [after] unless after.is_a?(Array)
-
-            # values removed
-            (before - after).reject(&:blank?).each do |value|
-              @current_journal.details << JournalDetail.new(:property => 'cf',
-                                                            :prop_key => c.custom_field_id,
-                                                            :old_value => value,
-                                                            :value => nil)
-            end
-            # values added
-            (after - before).reject(&:blank?).each do |value|
-              @current_journal.details << JournalDetail.new(:property => 'cf',
-                                                            :prop_key => c.custom_field_id,
-                                                            :old_value => nil,
-                                                            :value => value)
-            end
-          else
-            @current_journal.details << JournalDetail.new(:property => 'cf',
-                                                          :prop_key => c.custom_field_id,
-                                                          :old_value => before,
-                                                          :value => after)
-          end
-        }
-      end
-      @current_journal.save
-      # reset current journal
-      init_journal @current_journal.user, @current_journal.notes
-    end
+    puts "no journa for now"
   end
 
   def init_journal(user, notes = "")
@@ -186,10 +134,6 @@ class EasyContact < ActiveRecord::Base
     l(:activity_easy_contact_description)
   end
 
-  def safe_attributes(*args)
-    puts "safe_attributes call"
-  end
-
   # Safely sets attributes
   # Should be called from controllers instead of #attributes=
   # attr_accessible is too rough because we still want things like
@@ -221,16 +165,20 @@ class EasyContact < ActiveRecord::Base
 
   def init_custom_flds(*args)
     puts "initing custom_flds for EasyContactsCustomField"
-    @custom_fields ||= EasyContactsCustomField.where("type='EasyContactsCustomField' and project_id=?",project_id)
+    @custom_fields ||= EasyContactsCustomField.where("type='EasyContactsCustomField'")
+  end
 
+  def init_custom_fld_defaults(*args)
     # TODO load value
     @custom_field_values ||=[]
+
   end
 
   def validate_custom_field_values
     unless @custom_field_values.nil?
       super
     else
+      puts "custom validate"
       # validate custom fields
       #??? @custom_field_values.map(&:validate)
     end

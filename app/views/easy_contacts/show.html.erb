@@ -9,10 +9,10 @@
       <p> <%= f.text_field :date_created,readonly: true, value: @econtact.date_created %></p>
     </div>
 
-    <% unless @econtact.custom_field_values.nil? %>
+    <% unless @econtact.custom_fields.nil? %>
     <fieldset><legend><%= l(:label_custom_fields) %></legend>
-          <% @econtact.custom_field_values.each do |value| %>
-              <p><%= custom_field_tag_with_label :easy_contact, value %></p>
+          <% @econtact.custom_fields.each do |value| %>
+              <p><%= custom_field_tag_with_label :easy_contact, value, readonly: true %></p>
           <% end %>
     </fieldset>
     <% end %>
