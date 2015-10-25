@@ -178,6 +178,7 @@ class EasyContact < ActiveRecord::Base
     unless @custom_field_values.nil?
       super
     else
+      @custom_field_values ||= []
       puts "custom validate"
       # validate custom fields
       #??? @custom_field_values.map(&:validate)
