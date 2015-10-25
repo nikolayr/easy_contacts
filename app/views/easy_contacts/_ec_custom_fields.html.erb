@@ -1,0 +1,8 @@
+<div class="box tabular">
+<% @econtact.custom_fields.each do |custom_field| %>
+    <p>
+      <label for="<%= custom_field_tag_name('',custom_field) %>"><%= h(custom_field.name) %></label>
+      <%= format_value(custom_field.value,custom_field) %>
+    </p>
+<% end %>
+</div>

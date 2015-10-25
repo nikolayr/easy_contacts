@@ -7,9 +7,9 @@
       <p> <%= f.text_field :first_name,  value: @econtact.first_name %></p>
       <p> <%= f.text_field :last_name,   value: @econtact.last_name %></p>
       <p> <%= f.text_field :date_created,readonly: true, value: @econtact.date_created %></p>
-      <p>Custom Fields </p>
     </div>
 
+    <div class="box tabular">
     <% unless @econtact.custom_fields.nil? %>
         <fieldset><legend><%= l(:label_custom_fields) %></legend>
           <% @econtact.custom_fields.each do |value| %>
@@ -17,6 +17,7 @@
           <% end %>
         </fieldset>
     <% end %>
+    </div>
 
     <fieldset><legend><%= l(:label_attachment_plural) %></legend>
       <%= link_to_attachments @econtact, :thumbnails => true %>

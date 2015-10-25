@@ -11,12 +11,7 @@
 
     <% unless @econtact.custom_fields.nil? %>
     <fieldset><legend><%= l(:label_custom_fields) %></legend>
-          <% @econtact.custom_fields.each do |custom_field| %>
-          <p>
-            <label><%= h(custom_field.name) %></label>
-            <%= format_value(custom_field.value,custom_field) %>
-          </p>
-          <% end %>
+      <%= render :partial => 'ec_custom_fields', :locals => {:container => @econtact} %>
     </fieldset>
     <% end %>
 
