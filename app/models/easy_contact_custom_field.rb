@@ -1,8 +1,9 @@
-class EasyContactsCustomField < CustomField
+class EasyContactCustomField < CustomField
   has_and_belongs_to_many :easy_contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
 
+
   def type_name
-    :label_easy_contacts_plural
+    :label_easy_contact_plural
   end
 
   def visible_by?(project, user=User.current)

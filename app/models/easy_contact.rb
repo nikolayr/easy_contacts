@@ -19,7 +19,7 @@ class EasyContact < ActiveRecord::Base
   acts_as_customizable
   #:easy_contacts_custom_field :easy_contacts
   has_and_belongs_to_many :easy_contacts_custom_field,
-                          :class_name => 'EasyContactsCustomField',
+                          :class_name => 'EasyContactCustomField',
                           :order => "#{CustomField.table_name}.position",
                           :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
                           :association_foreign_key => 'custom_field_id'
@@ -166,8 +166,8 @@ class EasyContact < ActiveRecord::Base
   end
 
   def init_custom_flds(*args)
-    puts "initing custom_flds for EasyContactsCustomField"
-    @custom_fields = EasyContactsCustomField.where("type='EasyContactsCustomField'").sorted.all
+    puts "initing custom_flds for EasyContactCustomField"
+    @custom_fields = EasyContactCustomField.where("type='EasyContactCustomField'").sorted.all
   end
 
   def validate_custom_field_values
@@ -184,13 +184,13 @@ class EasyContact < ActiveRecord::Base
   # Overrides Redmine::Acts::Customizable::InstanceMethods#available_custom_fields
   def available_custom_fields
     puts "getting available_custom_fields"
-    @custom_fields ||= EasyContactsCustomField.where("type = 'EasyContactsCustomField'").sorted.all
+    @custom_fields ||= EasyContactCustomField.where("type = 'EasyContactCustomField'").sorted.all
     @custom_fields
   end
 
   def custom_fields(*args)
     puts "custom_fields"
-    @custom_fields = EasyContactsCustomField.where("type = 'EasyContactsCustomField'").sorted.all
+    @custom_fields = EasyContactCustomField.where("type = 'EasyContactCustomField'").sorted.all
     @custom_fields
   end
 

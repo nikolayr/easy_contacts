@@ -30,9 +30,9 @@ module EasyContacts
         def easy_contact_field_tab(*args)
           @@ec_tab_added ||= false
           unless @@ec_tab_added
-            custom_fields = CustomFieldsHelper::CUSTOM_FIELDS_TABS << {:name => 'EasyContactsCustomField',
+            custom_fields = CustomFieldsHelper::CUSTOM_FIELDS_TABS << {:name => 'EasyContactCustomField',
                                                                        :partial => 'custom_fields/index',
-                                                                       :label => :label_easy_contacts_plural}
+                                                                       :label => :label_easy_contact_plural}
             redef_without_warning 'CUSTOM_FIELDS_TABS', custom_fields
             @@ec_tab_added = true
           end
