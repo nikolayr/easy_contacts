@@ -13,8 +13,8 @@ class EasyContact < ActiveRecord::Base
   acts_as_attachable :after_add => :attachment_added,
                      :after_remove => :attachment_removed
 
-  attr_accessor :custom_field_values, :custom_fields
-  safe_attributes 'custom_field_values', 'custom_fields'
+#  attr_accessor :custom_field_values, :custom_fields
+#  safe_attributes 'custom_field_values', 'custom_fields'
 
   acts_as_customizable
   #:easy_contacts_custom_field :easy_contacts
@@ -160,18 +160,14 @@ class EasyContact < ActiveRecord::Base
   end
 
   def validate_value(*args)
+    # TODO add validation check
+    puts "validate values here"
     true
   end
 
   def init_custom_flds(*args)
     puts "initing custom_flds for EasyContactsCustomField"
-    @custom_fields ||= EasyContactsCustomField.where("type='EasyContactsCustomField'")
-  end
-
-  def init_custom_fld_defaults(*args)
-    # TODO load value
-    @custom_field_values ||=[]
-
+    @custom_fields = EasyContactsCustomField.where("type='EasyContactsCustomField'").sorted.all
   end
 
   def validate_custom_field_values
@@ -187,9 +183,15 @@ class EasyContact < ActiveRecord::Base
 
   # Overrides Redmine::Acts::Customizable::InstanceMethods#available_custom_fields
   def available_custom_fields
-    puts "available_custom_fields has #{@custom_fields.size} fields"
+    puts "getting available_custom_fields"
+    @custom_fields ||= EasyContactsCustomField.where("type = 'EasyContactsCustomField'").sorted.all
     @custom_fields
   end
 
+  def custom_fields(*args)
+    puts "custom_fields"
+    @custom_fields = EasyContactsCustomField.where("type = 'EasyContactsCustomField'").sorted.all
+    @custom_fields
+  end
 
 end
