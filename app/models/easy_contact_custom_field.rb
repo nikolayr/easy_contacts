@@ -1,5 +1,5 @@
 class EasyContactCustomField < CustomField
-  has_and_belongs_to_many :contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
+  has_and_belongs_to_many :contact, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
 
 
   def type_name
