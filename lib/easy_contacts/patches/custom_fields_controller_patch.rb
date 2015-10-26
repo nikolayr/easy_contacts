@@ -19,6 +19,7 @@ module EasyContacts
 
         def index_with_add_custom_contact_tab(*args)
           easy_contact_field_tab
+          index_without_add_custom_contact_tab
         end
 
         #redef const in module

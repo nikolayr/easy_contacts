@@ -13,12 +13,12 @@ class EasyContact < ActiveRecord::Base
   acts_as_attachable :after_add => :attachment_added,
                      :after_remove => :attachment_removed
 
-#  attr_accessor :custom_field_values, :custom_fields
-#  safe_attributes 'custom_field_values', 'custom_fields'
+  attr_accessor :custom_field_values, :custom_fields
+  safe_attributes 'custom_field_values', 'custom_fields'
 
   acts_as_customizable
   #:easy_contacts_custom_field :easy_contacts
-  has_and_belongs_to_many :easy_contacts_custom_field,
+  has_and_belongs_to_many :easy_contact_custom_field,
                           :class_name => 'EasyContactCustomField',
                           :order => "#{CustomField.table_name}.position",
                           :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
@@ -138,26 +138,26 @@ class EasyContact < ActiveRecord::Base
   # Should be called from controllers instead of #attributes=
   # attr_accessible is too rough because we still want things like
   # Issue.new(:project => foo) to work
-  def safe_attributes=(attrs, user=User.current)
-    return unless attrs.is_a?(Hash)
-    attrs = attrs.dup
-
-    if attrs['custom_field_values'].present?
-      editable_custom_field_ids = editable_custom_field_values(user).map {|v| v.custom_field_id.to_s}
-      # TODO: use #select when ruby1.8 support is dropped
-      attrs['custom_field_values'] = attrs['custom_field_values'].reject {|k, v| !editable_custom_field_ids.include?(k.to_s)}
-    end
-
-    if attrs['custom_fields'].present?
-      editable_custom_field_ids = editable_custom_field_values(user).map {|v| v.custom_field_id.to_s}
-      # TODO: use #select when ruby1.8 support is dropped
-      attrs['custom_fields'] = attrs['custom_fields'].reject {|c| !editable_custom_field_ids.include?(c['id'].to_s)}
-    end
-
-    # mass-assignment security bypass
-    assign_attributes attrs, :without_protection => true
-
-  end
+  # def safe_attributes=(attrs, user=User.current)
+  #   return unless attrs.is_a?(Hash)
+  #   attrs = attrs.dup
+  #
+  #   if attrs['custom_field_values'].present?
+  #     editable_custom_field_ids = editable_custom_field_values(user).map {|v| v.custom_field_id.to_s}
+  #     # TODO: use #select when ruby1.8 support is dropped
+  #     attrs['custom_field_values'] = attrs['custom_field_values'].reject {|k, v| !editable_custom_field_ids.include?(k.to_s)}
+  #   end
+  #
+  #   if attrs['custom_fields'].present?
+  #     editable_custom_field_ids = editable_custom_field_values(user).map {|v| v.custom_field_id.to_s}
+  #     # TODO: use #select when ruby1.8 support is dropped
+  #     attrs['custom_fields'] = attrs['custom_fields'].reject {|c| !editable_custom_field_ids.include?(c['id'].to_s)}
+  #   end
+  #
+  #   # mass-assignment security bypass
+  #   assign_attributes attrs, :without_protection => true
+  #
+  # end
 
   def validate_value(*args)
     # TODO add validation check
@@ -188,10 +188,10 @@ class EasyContact < ActiveRecord::Base
     @custom_fields
   end
 
-  def custom_fields(*args)
-    puts "custom_fields"
-    @custom_fields = EasyContactCustomField.where("type = 'EasyContactCustomField'").sorted.all
-    @custom_fields
-  end
+  # def custom_fields(*args)
+  #   puts "custom_fields"
+  #   @custom_fields = EasyContactCustomField.where("type = 'EasyContactCustomField'").sorted.all
+  #   @custom_fields
+  # end
 
 end

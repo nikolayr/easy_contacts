@@ -1,5 +1,5 @@
 class EasyContactCustomField < CustomField
-  has_and_belongs_to_many :easy_contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
+  has_and_belongs_to_many :contacts, :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}", :foreign_key => "custom_field_id"
 
 
   def type_name
@@ -32,10 +32,10 @@ class EasyContactCustomField < CustomField
   end
 
   def value(*args)
-    self.custom_values
     #[#<CustomValue id: 12, customized_type: "EasyContact", customized_id: 11, custom_field_id: 9, value: "">,
     # #<CustomValue id: 13, customized_type: "EasyContact", customized_id: 12, custom_field_id: 9, value: "yolo">]
-    self.custom_values.last
+    #self.custom_values.last which one???
+    self.default_value
   end
 
 end

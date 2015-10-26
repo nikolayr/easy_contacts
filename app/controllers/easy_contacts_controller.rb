@@ -73,7 +73,9 @@ class EasyContactsController < ApplicationController
     @econtact.custom_field_values ||=[]
 
     if params[:easy_contact].has_key? :custom_field_values
-      @econtact.custom_field_values= params[:easy_contact][:custom_field_values]
+      # TODO save values
+      # CustomFieldValue
+      #@econtact.custom_field_values= params[:easy_contact][:custom_field_values]
     end
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))

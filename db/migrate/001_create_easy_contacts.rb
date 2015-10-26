@@ -9,7 +9,7 @@ class CreateEasyContacts < ActiveRecord::Migration
 
     create_table "custom_fields_contacts", :id => false, :force => true do |t|
       t.column "custom_field_id", :integer, :default => 0, :null => false
-      t.column "contact_id", :integer, :default => 0, :null => false
+      t.column "easy_contact_id", :integer, :default => 0, :null => false
     end
 
   end
