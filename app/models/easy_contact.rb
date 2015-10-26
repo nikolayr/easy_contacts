@@ -176,7 +176,7 @@ class EasyContact < ActiveRecord::Base
     else
       @custom_field_values ||= []
       puts "custom validate"
-      # validate custom fields
+      #TODO validate custom fields, and push them to array custom_field_values
       #??? @custom_field_values.map(&:validate)
     end
   end

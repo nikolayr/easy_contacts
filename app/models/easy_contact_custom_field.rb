@@ -32,6 +32,9 @@ class EasyContactCustomField < CustomField
   end
 
   def value(*args)
+    #self.custom_values
+    #[#<CustomValue id: 12, customized_type: "EasyContact", customized_id: 11, custom_field_id: 9, value: "">,
+    # #<CustomValue id: 13, customized_type: "EasyContact", customized_id: 12, custom_field_id: 9, value: "yolo">]
     self.default_value
   end
 

@@ -73,12 +73,7 @@ class EasyContactsController < ApplicationController
     @econtact.custom_field_values ||=[]
 
     if params[:easy_contact].has_key? :custom_field_values
-# find and assign value to custom field
-#      @econtact.custom_fields.each = params[:easy_contact][:custom_field_values];
-
-      params[:easy_contact][:custom_field_values].each {|custom_fld|
-        # save value #{custom_fld[1]} as field # custom_fld[0]
-      }
+      @econtact.custom_field_values= params[:easy_contact][:custom_field_values]
     end
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
