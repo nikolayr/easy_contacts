@@ -18,20 +18,13 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
-rename fiels in table custom_fields_contacts (contact_id must be easy_contact_id)
- drop and restore plugins migration
-
- custom_field.rb - field_format (validate presence)
-
- add custom fields
  add custom query to contacts#index
  add pagination
 
- set acts_as_activity_provider within easy_contact model
-
+ add Easy Contacts to Search index
  make contacts searchable (Redmine::Search.available_search_types)
 
-
+ attachments when contact destroyed attachments should be destroyed also
  set/update author on contact creation
  sort out by projectid when showing all contacts
  research atachments/_links for .js deletion of newly added attachments

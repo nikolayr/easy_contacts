@@ -58,8 +58,6 @@ class EasyContactsController < ApplicationController
   end
 
   def create
-    # 2do validate params
-    # possible to use strong parameters params[:easy_contact].permit(:first_name,:last_name,:date_created)
 
     @project = Project.find_by_identifier(params[:project_id])
     usr_id = User.logged ? User.current.id : 0
@@ -75,7 +73,7 @@ class EasyContactsController < ApplicationController
     if params[:easy_contact].has_key? :custom_field_values
       # TODO save values
       # CustomFieldValue
-      #@econtact.custom_field_values= params[:easy_contact][:custom_field_values]
+      @econtact.custom_field_values= params[:easy_contact][:custom_field_values]
     end
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
@@ -100,6 +98,7 @@ class EasyContactsController < ApplicationController
 
     @econtact.init_custom_flds
 
+    @econtact.custom_field_values=params[:easy_contact][:custom_field_values]
 
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 

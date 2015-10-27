@@ -13,8 +13,9 @@ class EasyContact < ActiveRecord::Base
   acts_as_attachable :after_add => :attachment_added,
                      :after_remove => :attachment_removed
 
-  attr_accessor :custom_field_values, :custom_fields
-  safe_attributes 'custom_field_values', 'custom_fields'
+  attr_accessor :custom_fields
+#  attr_accessor :custom_field_values, :custom_fields
+#  safe_attributes 'custom_field_values', 'custom_fields'
 
   acts_as_customizable
   #:easy_contacts_custom_field :easy_contacts
@@ -168,6 +169,10 @@ class EasyContact < ActiveRecord::Base
   def init_custom_flds(*args)
     puts "initing custom_flds for EasyContactCustomField"
     @custom_fields = EasyContactCustomField.where("type='EasyContactCustomField'").sorted.all
+
+    @custom_field_values ||= self.custom_field_values
+
+    puts "init_custom_flds complete for #{self.id}"
   end
 
   def validate_custom_field_values
@@ -177,7 +182,7 @@ class EasyContact < ActiveRecord::Base
       @custom_field_values ||= []
       puts "custom validate"
       #TODO validate custom fields, and push them to array custom_field_values
-      #??? @custom_field_values.map(&:validate)
+      #??? @custom_field_values.map(&:validate_value)
     end
   end
 

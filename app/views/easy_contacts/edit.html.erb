@@ -10,10 +10,10 @@
     </div>
 
     <div class="box tabular">
-    <% unless @econtact.custom_fields.nil? %>
+    <% unless @econtact.custom_field_values.nil? %>
         <fieldset><legend><%= l(:label_custom_fields) %></legend>
-          <% @econtact.custom_fields.each do |value| %>
-              <p><%= custom_field_tag_with_label :easy_contact, value %></p>
+          <% @econtact.custom_field_values.each do |v| %>
+              <p><%= custom_field_tag_with_label :easy_contact, v %></p>
           <% end %>
         </fieldset>
     <% end %>
