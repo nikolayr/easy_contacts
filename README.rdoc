@@ -24,6 +24,10 @@ contacts. Index (list) will be via custom query.
  add Easy Contacts to Search index
  make contacts searchable (Redmine::Search.available_search_types)
 
+ journal: save @current_journal added records
+ activity: add link to author profile
+ activity: check that activity is displayed when displayed on user activity page (not project one)
+
  attachments when contact destroyed attachments should be destroyed also
  set/update author on contact creation
  sort out by projectid when showing all contacts
