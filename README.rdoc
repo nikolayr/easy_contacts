@@ -18,6 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+ add retrieve_ec_query copy of retrieve_query set proper EasyContactQuery
  add custom query to contacts#index
  add pagination
 

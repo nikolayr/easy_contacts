@@ -29,24 +29,25 @@ class EasyContactsController < ApplicationController
     # end
 
     #@query is created within retrieve_query
-    retrieve_query
+    retrieve_query # this must be called as retrieve_ec_query
+
     sort_init(@query.sort_criteria.empty? ? [['id']] : @query.sort_criteria)
     sort_update(@query.sortable_columns)
     @query.sort_criteria = sort_criteria.to_a
 
     if @query.valid?
       case params[:format]
-        when 'xml', 'json'
+        when 'json'
           @offset, @limit = api_offset_and_limit
-          @query.column_names = %w(author)
+          @query.column_names = %w(author_id)
         else
           @limit = per_page_option
       end
 
-      @econtacts_count = @query.issue_count
+      @econtacts_count = @query.contacts_count
       @econtacts_pages = Paginator.new @econtacts_count, @limit, params['page']
       @offset ||= @econtacts_pages.offset
-      @econtacts = @query.easy_contacts(:include => [:first_name, :last_name, :date_created],
+      @econtacts = @query.contacts(:include => [:first_name, :last_name, :date_created],
                               :order => sort_clause,
                               :offset => @offset,
                               :limit => @limit)
@@ -54,9 +55,6 @@ class EasyContactsController < ApplicationController
 
       respond_to do |format|
         format.html { render :template => 'easy_contacts/qindex', :layout => !request.xhr? }
-        format.api  {
-          Issue.load_visible_relations(@issues) if include_in_api_response?('relations')
-        }
       end
     else
       respond_to do |format|

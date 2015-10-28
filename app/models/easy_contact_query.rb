@@ -7,7 +7,8 @@ class EasyContactQuery < Query
       QueryColumn.new(:id, :sortable => "#{EasyContact.table_name}.id", :default_order => 'desc', :caption => '#', :frozen => true),
       QueryColumn.new(:first_name, :sortable => "#{EasyContact.table_name}.first_name"),
       QueryColumn.new(:last_name, :sortable => "#{EasyContact.table_name}.last_name"),
-      QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created")
+      QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created"),
+      QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.date_created")
   ]
 
   scope :visible, -> { where(visible: true) }
