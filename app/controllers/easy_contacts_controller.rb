@@ -105,16 +105,13 @@ class EasyContactsController < ApplicationController
     usr_id = User.logged ? User.current.id : 0
 
     # prepare attr
-    upd_this = {first_name: params[:easy_contact][:first_name],
+    ec_data = {first_name: params[:easy_contact][:first_name],
                 last_name: params[:easy_contact][:last_name],
                 project_id: @project.id,
                 author_id: usr_id}
 
-    # update custom fields
-    #params[:easy_contact][:custom_field_values]
-
     respond_to do |format|
-      if @econtact.update_attributes(upd_this)
+      if @econtact.update_attributes(ec_data)
         flash[:notice] = l(:notice_contact_record_update)
         format.html { redirect_to action: 'show', id: @econtact.id }
         format.json { head :no_content }
