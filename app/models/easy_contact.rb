@@ -46,6 +46,7 @@ class EasyContact < ActiveRecord::Base
 # Saves the changes in a Journal
 # Called after_save
   def create_journal
+    # TODO init journal and save activity on attach added, new contact item created
     puts "no journa for now"
   end
 

@@ -2,7 +2,6 @@
 en:
   easy_contacts:               "easy contacts"
   easy_contacts_proj_menu_str: "EasyContacts"
-  easy_contacts_enabled_str:   "Add some settings if needed"
   easy_contacts_index:          "Contacts"
   label_custom_contact:        "Custom Contact Fields"
   label_contact_new:           "New Contact"

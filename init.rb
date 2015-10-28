@@ -17,7 +17,9 @@ Redmine::Plugin.register :easy_contacts do
     activity.register(:easy_contact_created,{:class_name => 'EasyContact'})
   end
 
-  menu :project_menu, :easy_contacts , { :controller => 'easy_contacts', :action => 'index'}, :caption => (:easy_contacts_proj_menu_str) , :param => :project_id, :after => :settings
+  menu :project_menu, :easy_contacts , { :controller => 'easy_contacts', :action => 'index'},
+       :caption => (:easy_contacts_proj_menu_str) , :param => :project_id, :after => :settings
+
 end
 
 ActionDispatch::Callbacks.to_prepare do
