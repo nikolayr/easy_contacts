@@ -75,7 +75,6 @@ class EasyContact < ActiveRecord::Base
 # Callback on attachment deletion
   def attachment_removed(obj)
     # TODO find attachment adn remove it (unless it's not required in another record)
-    #puts "attachment_removed"
   end
 
   def project
@@ -117,17 +116,12 @@ class EasyContact < ActiveRecord::Base
   end
 
   def init_custom_flds
-    puts "initing custom_flds for EasyContactCustomField"
     @custom_fields = EasyContactCustomField.where("type='EasyContactCustomField'").sorted.all
-
     @custom_field_values ||= self.custom_field_values
-
-    puts "init_custom_flds complete for #{self.id}"
   end
 
   # Overrides Redmine::Acts::Customizable::InstanceMethods#available_custom_fields
   def available_custom_fields
-    puts "getting available_custom_fields"
     @custom_fields ||= EasyContactCustomField.where("type = 'EasyContactCustomField'").sorted.all
     @custom_fields
   end
