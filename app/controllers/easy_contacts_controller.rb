@@ -18,6 +18,8 @@ class EasyContactsController < ApplicationController
   helper :sort
   include SortHelper
 
+  include EasyContactQuery
+
   def index
     @project = Project.find_by_identifier(params[:project_id])
 
