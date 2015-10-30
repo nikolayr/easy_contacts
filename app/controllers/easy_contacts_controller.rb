@@ -29,7 +29,8 @@ class EasyContactsController < ApplicationController
     # end
 
     #@query is created within retrieve_query
-    retrieve_query # this must be called as retrieve_ec_query
+    #retrieve_query # this must be called as retrieve_ec_query
+    retrieve_ec_query
 
     sort_init(@query.sort_criteria.empty? ? [['id']] : @query.sort_criteria)
     sort_update(@query.sortable_columns)
