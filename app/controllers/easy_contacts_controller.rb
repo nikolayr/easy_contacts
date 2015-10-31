@@ -18,7 +18,7 @@ class EasyContactsController < ApplicationController
   helper :sort
   include SortHelper
 
-  include EasyContactQuery
+  include EasyContactsHelper
 
   def index
     @project = Project.find_by_identifier(params[:project_id])
@@ -32,7 +32,7 @@ class EasyContactsController < ApplicationController
 
     #@query is created within retrieve_query
     #retrieve_query # this must be called as retrieve_ec_query
-    retrieve_ec_query
+    retrieve_ec_query(@project.id)
 
     sort_init(@query.sort_criteria.empty? ? [['id']] : @query.sort_criteria)
     sort_update(@query.sortable_columns)
