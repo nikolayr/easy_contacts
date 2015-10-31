@@ -1,4 +1,3 @@
-module EasyContactsQuery
   class EasyContactQuery < Query
 
     self.queried_class = EasyContact
@@ -8,15 +7,15 @@ module EasyContactsQuery
         QueryColumn.new(:first_name, :sortable => "#{EasyContact.table_name}.first_name"),
         QueryColumn.new(:last_name, :sortable => "#{EasyContact.table_name}.last_name"),
         QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created"),
-        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id")
+        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id"),
+        QueryColumn.new(:project_id, :sortable => "#{EasyContact.table_name}.project_id")
     ]
 
     scope :visible, -> { where(visible: true) }
 
     def initialize(attributes=nil, *args)
-#      super attributes
-      super
-      self.filters ||= { 'project_id' => {:operator => "=", :values => [attributes[:project_id].to_s]} }
+      super attributes
+      self.filters ||= { 'project_id' => {:operator => "=", :values => [""]} }
     end
 
     # Returns true if the query is visible to +user+ or the current user.
@@ -84,7 +83,7 @@ module EasyContactsQuery
     end
 
     def contacts_count
-      EasyContact.where(statement).count
+      EasyContact.where( statement ).count
     rescue ::ActiveRecord::StatementInvalid => e
       raise StatementInvalid.new(e.message)
     end
@@ -133,4 +132,3 @@ module EasyContactsQuery
     # end
 
   end
-end

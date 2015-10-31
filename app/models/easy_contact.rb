@@ -45,8 +45,9 @@ class EasyContact < ActiveRecord::Base
 
   #scope is used in ec query
   scope :visible, lambda {|*args|
-                  #where(Issue.visible_condition(args.shift || User.current, *args))
-                  all
+          puts "1"
+                  where(project_id: 1)
+          puts ".,"
                 }
 
 # Saves the changes in a Journal

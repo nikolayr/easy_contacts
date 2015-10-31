@@ -18,7 +18,7 @@ class EasyContactsController < ApplicationController
   helper :sort
   include SortHelper
 
-  include EasyContactsHelper
+  include EasyContactsQueryHelper
 
   def index
     @project = Project.find_by_identifier(params[:project_id])
@@ -54,7 +54,6 @@ class EasyContactsController < ApplicationController
                               :order => sort_clause,
                               :offset => @offset,
                               :limit => @limit)
-      @econtacts_count_by_group = @query.easy_contact_count_by_group
 
       respond_to do |format|
         format.html { render :template => 'easy_contacts/qindex', :layout => !request.xhr? }
