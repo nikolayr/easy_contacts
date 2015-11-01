@@ -5,17 +5,17 @@
     self.available_columns = [
         QueryColumn.new(:id, :sortable => "#{EasyContact.table_name}.id", :default_order => 'desc', :caption => '#', :frozen => true),
         QueryColumn.new(:first_name, :sortable => "#{EasyContact.table_name}.first_name"),
-        QueryColumn.new(:last_name, :sortable => "#{EasyContact.table_name}.last_name"),
-        QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created"),
-        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id"),
-        QueryColumn.new(:project_id, :sortable => "#{EasyContact.table_name}.project_id")
+        QueryColumn.new(:last_name, :sortable => "#{EasyContact.table_name}.last_name")
+#        QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created"),
+#        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id"),
+#        QueryColumn.new(:project_id, :sortable => "#{EasyContact.table_name}.project_id")
     ]
 
     scope :visible, -> { where(visible: true) }
 
     def initialize(attributes=nil, *args)
       super attributes
-      self.filters ||= { 'project_id' => {:operator => "=", :values => [""]} }
+      self.filters ||= { 'project_id' => {:operator => "o", :values => [""]} }
     end
 
     # Returns true if the query is visible to +user+ or the current user.
@@ -61,10 +61,10 @@
       add_available_filter "last_name", :type => :text
       add_available_filter "date_created", :type => :date
 
-  #    issue_custom_fields = IssueCustomField.where(:is_for_all => true)
-  #    add_custom_fields_filters(issue_custom_fields)
-
-  #    add_associations_custom_fields_filters :project, :author, :assigned_to, :fixed_version
+     # issue_custom_fields = IssueCustomField.where(:is_for_all => true)
+     # add_custom_fields_filters(issue_custom_fields)
+     #
+     # add_associations_custom_fields_filters :project, :author, :assigned_to, :fixed_version
 
     end
 
@@ -93,7 +93,7 @@
     def contacts(options={})
       order_option = [group_by_sort_order, options[:order]].flatten.reject(&:blank?)
 
-      scope = EasyContact.visible.
+      scope = EasyContact.
           where(statement).
           where(options[:conditions]).
           order(order_option).
@@ -131,4 +131,13 @@
     #   alias_method "sql_for_#{relation_type}_field".to_sym, :sql_for_relations
     # end
 
-  end
+    def project_statement
+      "project_id in (#{project.id})"
+    end
+
+   def statement
+     ''
+   end
+
+
+    end

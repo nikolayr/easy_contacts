@@ -38,32 +38,20 @@ class EasyContactsController < ApplicationController
     sort_update(@query.sortable_columns)
     @query.sort_criteria = sort_criteria.to_a
 
-    if @query.valid?
-      case params[:format]
-        when 'json'
-          @offset, @limit = api_offset_and_limit
-          @query.column_names = %w(author_id)
-        else
-          @limit = per_page_option
-      end
+    @limit = per_page_option
 
-      @econtacts_count = @query.contacts_count
-      @econtacts_pages = Paginator.new @econtacts_count, @limit, params['page']
-      @offset ||= @econtacts_pages.offset
-      @econtacts = @query.contacts(:include => [:first_name, :last_name, :date_created],
-                              :order => sort_clause,
-                              :offset => @offset,
-                              :limit => @limit)
+    @econtacts_count = @query.contacts_count
+    @econtacts_pages = Paginator.new @econtacts_count, @limit, params['page']
+    @offset ||= @econtacts_pages.offset
+    @econtacts = @query.contacts(:include => [:first_name, :last_name, :date_created],
+                                 :order => sort_clause,
+                                 :offset => @offset,
+                                 :limit => @limit)
 
-      respond_to do |format|
-        format.html { render :template => 'easy_contacts/qindex', :layout => !request.xhr? }
-      end
-    else
-      respond_to do |format|
-        format.html { render(:template => 'easy_contacts/index') }
-        format.api { render_validation_errors(@query) }
-      end
+    respond_to do |format|
+      format.html { render :template => 'easy_contacts/qindex', :layout => !request.xhr? }
     end
+
   rescue ActiveRecord::RecordNotFound
     render_404
 

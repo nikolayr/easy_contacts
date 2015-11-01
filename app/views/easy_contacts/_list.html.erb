@@ -16,7 +16,7 @@
   </thead>
   <% previous_group, first = false, true %>
   <tbody>
-  <% contacts_list(econtacts) do |issue, level| -%>
+  <% @econtacts.each do |issue| -%>
   <tr id="issue-<%= issue.id %>" class="hascontextmenu <%= cycle('odd', 'even') %>">
     <td class="checkbox hide-when-print"><%= check_box_tag("ids[]", issue.id, false, :id => nil) %></td>
     <%= raw query.inline_columns.map {|column| "<td class=\"created-by-me\">#{column_content(column, issue)}</td>"}.join %>
