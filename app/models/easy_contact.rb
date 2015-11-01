@@ -43,13 +43,6 @@ class EasyContact < ActiveRecord::Base
   acts_as_event :title => :get_activity_title,
                 :url => :get_activity_url
 
-  #scope is used in ec query
-  scope :visible, lambda {|*args|
-          puts "1"
-                  where(project_id: 1)
-          puts ".,"
-                }
-
 # Saves the changes in a Journal
 # Called after_save
   def create_journal

@@ -17,12 +17,12 @@
   <% previous_group, first = false, true %>
   <tbody>
   <% @econtacts.each do |issue| -%>
-  <tr id="issue-<%= issue.id %>" class="hascontextmenu <%= cycle('odd', 'even') %>">
+  <tr id="issue-<%= issue.id %>" class=" <%= cycle('odd', 'even') %>">
     <td class="checkbox hide-when-print"><%= check_box_tag("ids[]", issue.id, false, :id => nil) %></td>
-    <%= raw query.inline_columns.map {|column| "<td class=\"created-by-me\">#{column_content(column, issue)}</td>"}.join %>
+    <%= raw query.inline_columns.map {|column| "<td class=\"created-by-me\">#{contact_column_content(column, issue)}</td>"}.join %>
   </tr>
   <% @query.block_columns.each do |column|
-       if (text = column_content(column, issue)) && text.present? -%>
+       if (text = contact_column_content(column, issue)) && text.present? -%>
   <tr class="<%= current_cycle %>">
     <td colspan="<%= @query.inline_columns.size + 1 %>" class="<%= column.css_classes %>"><%= text %></td>
   </tr>

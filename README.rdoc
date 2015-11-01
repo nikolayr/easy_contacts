@@ -18,6 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
+
  add custom query to contacts#index
  add pagination
 
