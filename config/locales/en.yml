@@ -9,6 +9,8 @@ en:
   field_first_name:            "First Name"
   field_last_name:             "Last Name"
   field_date_created:          "Created at"
+  field_author_id:              "Author"
+  field_project_id:             "Project"
   label_contact_update:        "Update contact"
   add_new_easy_contact:        "Add new Contact"
   notice_contact_record_created:      "Contact record created"

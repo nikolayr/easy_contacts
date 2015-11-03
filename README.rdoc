@@ -18,9 +18,8 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
-
+ fix save query button for contact
  add custom query to contacts#index
- add pagination
 
  add custom fields to query EasyContactQuery::initialize_available_filters
 
@@ -31,6 +30,7 @@ contacts. Index (list) will be via custom query.
  activity: add link to author profile
  activity: check that activity is displayed when displayed on user activity page (not project one)
 
+ check: pagination
 
  show Easy Contact menu only when plugin enabled within project :if => Proc.new { User.current.allowed_to?(:view_easy_contacts, projects_to_search/find_optional_project)
  attachments when contact destroyed attachments should be destroyed also

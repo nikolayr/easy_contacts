@@ -34,16 +34,11 @@ module EasyContactsHelper
     end
 
     def contact_column_value(column, issue, value)
-      puts "column_value"
       case column.name
         when :id
           link_to value, easy_contact_path(issue)
-        when :subject
+        when :first_name
           link_to value, easy_contact_path(issue)
-        when :description
-          issue.description? ? content_tag('div', textilizable(issue, :description), :class => "wiki") : ''
-        when :done_ratio
-          progress_bar(value, :width => '80px')
         else
           format_object(value)
       end

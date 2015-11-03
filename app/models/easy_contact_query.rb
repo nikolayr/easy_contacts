@@ -5,10 +5,10 @@
     self.available_columns = [
         QueryColumn.new(:id, :sortable => "#{EasyContact.table_name}.id", :default_order => 'desc', :caption => '#', :frozen => true),
         QueryColumn.new(:first_name, :sortable => "#{EasyContact.table_name}.first_name"),
-        QueryColumn.new(:last_name, :sortable => "#{EasyContact.table_name}.last_name")
-#        QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created"),
-#        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id"),
-#        QueryColumn.new(:project_id, :sortable => "#{EasyContact.table_name}.project_id")
+        QueryColumn.new(:last_name, :sortable => "#{EasyContact.table_name}.last_name"),
+        QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created"),
+        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id"),
+        QueryColumn.new(:project_id, :sortable => "#{EasyContact.table_name}.project_id")
     ]
 
     scope :visible, -> { where(visible: true) }
@@ -61,10 +61,10 @@
       add_available_filter "last_name", :type => :text
       add_available_filter "date_created", :type => :date
 
-     # issue_custom_fields = IssueCustomField.where(:is_for_all => true)
-     # add_custom_fields_filters(issue_custom_fields)
-     #
-     # add_associations_custom_fields_filters :project, :author, :assigned_to, :fixed_version
+     custom_fields = EasyContactCustomField.where(is_for_all: false)
+     add_custom_fields_filters(custom_fields)
+
+     #add_associations_custom_fields_filters :project, :author, :assigned_to, :fixed_version
 
     end
 
@@ -136,6 +136,7 @@
     end
 
    def statement
+     # TODO return query statements to filter contacts
      ''
    end
 
