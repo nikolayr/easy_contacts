@@ -46,11 +46,6 @@
       <p class="buttons">
         <%= link_to_function l(:button_apply), 'submit_query_form("query_form")', :class => 'icon icon-checked' %>
         <%= link_to l(:button_clear), { :set_filter => 1, :project_id => @project }, :class => 'icon icon-reload'  %>
-        <% if @query.new_record? && User.current.allowed_to?(:save_queries, @project, :global => true) %>
-            <%= link_to_function l(:button_save),
-                                 "$('#query_form').attr('action', '#{ @project ? new_project_query_path(@project) : new_query_path }'); submit_query_form('query_form')",
-                                 :class => 'icon icon-save' %>
-        <% end %>
       </p>
     </div>
 <% end %>
@@ -67,7 +62,5 @@
 <% end %>
 
 <% content_for :sidebar do %>
-    <%= 'pew!' %>
+    <h3><%= 'TODO add saved queries here' %></h3>
 <% end %>
-
-<%= context_menu '/projects/ruban/easy_contacts/' %>
