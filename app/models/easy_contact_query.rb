@@ -69,9 +69,6 @@
     end
 
     def available_columns
-
-      #TODO add custom fields to available columns
-
       return @available_columns if @available_columns
       @available_columns = self.class.available_columns.dup
       @available_columns
