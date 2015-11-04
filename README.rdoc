@@ -30,6 +30,7 @@ contacts. Index (list) will be via custom query.
  activity: check that activity is displayed when displayed on user activity page (not project one)
 
  check: pagination
+ check: deletion of custom values
 
  show Easy Contact menu only when plugin enabled within project :if => Proc.new { User.current.allowed_to?(:view_easy_contacts, projects_to_search/find_optional_project)
  attachments when contact destroyed attachments should be destroyed also

@@ -124,7 +124,7 @@
     # end
 
     def project_statement
-      "project_id in (#{project.id})"
+      "project_id in (#{@project.id})"
     end
 
    def statement

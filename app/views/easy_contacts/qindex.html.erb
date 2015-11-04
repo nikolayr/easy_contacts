@@ -1,4 +1,8 @@
 <div class="contextual">
+  <div class="contextual">
+    <%= link_to l(:add_new_easy_contact), 'easy_contacts/new',{ class: 'icon icon-add'} %>
+  </div>
+
   <% if !@query.new_record? && @query.editable_by?(User.current) %>
       <%= link_to l(:button_edit), edit_query_path(@query), :class => 'icon icon-edit' %>
       <%= delete_link query_path(@query) %>
