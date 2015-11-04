@@ -1,6 +1,7 @@
 class EasyContactsController < ApplicationController
 
-#  default_search_scope :easy_contacts
+  default_search_scope :easy_contacts
+
   before_filter :authorize#, :except => [:index]
   before_filter :find_project, :authorize, :only => :index
 

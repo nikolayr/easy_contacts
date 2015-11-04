@@ -6,8 +6,8 @@
         QueryColumn.new(:id, :sortable => "#{EasyContact.table_name}.id", :default_order => 'desc', :caption => '#', :frozen => true),
         QueryColumn.new(:first_name, :sortable => "#{EasyContact.table_name}.first_name"),
         QueryColumn.new(:last_name, :sortable => "#{EasyContact.table_name}.last_name"),
-        QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created"),
-        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id")
+        QueryColumn.new(:date_created, :sortable => "#{EasyContact.table_name}.date_created")
+#        QueryColumn.new(:author_id, :sortable => "#{EasyContact.table_name}.author_id")
 #        QueryColumn.new(:project_id, :sortable => "#{EasyContact.table_name}.project_id")
     ]
 
@@ -15,7 +15,7 @@
 
     def initialize(attributes=nil, *args)
       super attributes
-      self.filters ||= { 'project_id' => {:operator => "=", :values => ["1"]} }
+      self.filters ||= {} #{ 'project_id' => {:operator => "=", :values => [""]} }
     end
 
     # Returns true if the query is visible to +user+ or the current user.
@@ -123,8 +123,8 @@
     #   alias_method "sql_for_#{relation_type}_field".to_sym, :sql_for_relations
     # end
 
-    def project_statement
-      "project_id in (#{@project.id})"
+    def project_statement(proj_id)
+      "project_id in (#{proj_id})"
     end
 
    def statement
@@ -153,7 +153,7 @@
        filters_clauses << c.custom_field.visibility_by_project_condition
      end
 
-     filters_clauses << project_statement
+     filters_clauses << project_statement(project.id)
      filters_clauses.reject!(&:blank?)
 
      filters_clauses.any? ? filters_clauses.join(' AND ') : nil

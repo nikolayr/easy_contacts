@@ -20,7 +20,7 @@ module EasyContactsQueryHelper
       @query.project = @project
       @query.build_from_params(params)
 
-      @query.column_names=ec_default_fields
+      @query.column_names ||= ec_default_fields
 
       session[:query] = {:project_id => @query.project_id, :filters => @query.filters, :group_by => @query.group_by, :column_names => @query.column_names}
     else
