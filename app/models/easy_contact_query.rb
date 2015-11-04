@@ -69,17 +69,12 @@
     end
 
     def available_columns
+
+      #TODO add custom fields to available columns
+
       return @available_columns if @available_columns
       @available_columns = self.class.available_columns.dup
       @available_columns
-    end
-
-    def default_columns_names
-      @default_columns_names ||= begin
-        default_columns = Setting.issue_list_default_columns.map(&:to_sym)
-
-        project.present? ? default_columns : [:project] | default_columns
-      end
     end
 
     def contacts_count
