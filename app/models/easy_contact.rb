@@ -27,8 +27,10 @@ class EasyContact < ActiveRecord::Base
                      :project_key => 'project_id',
                      :date_column => 'date_created',
                      :sort_order  => 'date_created',
-                     :permission => :view_easy_contacts
-# TODO refine project id  :project_key => "#{Repository.table_name}.project_id",
+                     :permission => :view_easy_contacts,
+                     :project_key => "#{EasyContact.table_name}.project_id"
+
+# TODO refine project id  :project_key => "#{EasyContact.table_name}.project_id",
 
   acts_as_activity_provider :type => 'easy_contact_created',
                             :author_key => nil,

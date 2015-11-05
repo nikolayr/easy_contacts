@@ -18,7 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
-
+  review controller search index
  add Easy Contacts to Search index
  make contacts searchable (Redmine::Search.available_search_types)
 

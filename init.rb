@@ -29,3 +29,6 @@ ActionDispatch::Callbacks.to_prepare do
   end
 end
 
+Redmine::Search.map do |search|
+  search.register :easy_contacts
+end
