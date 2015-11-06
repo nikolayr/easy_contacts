@@ -37,7 +37,7 @@ contacts. Index (list) will be via custom query.
 
 ---
 
-- installation
+== install
 
 ---
 > bundle exec rake redmine:plugins:migrate [RAILS_ENV=production]
@@ -46,7 +46,7 @@ contacts. Index (list) will be via custom query.
  such as: view easy contacts, view easy contacts attachments, delete easy contacts attachments
 ---
 
-- uninstall
+== uninstall
 
 > bundle exec rake redmine:plugins:migrate NAME=easy_contacts VERSION=0 [RAILS_ENV=production]
 
