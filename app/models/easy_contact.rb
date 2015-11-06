@@ -24,7 +24,7 @@ class EasyContact < ActiveRecord::Base
 
   belongs_to :project
 # TODO review search functionality
-  acts_as_searchable :columns => ['first_name', 'last_name', 'date_created'],
+  acts_as_searchable :columns => ['first_name', 'last_name'],
                      :project_key => 'project_id',
                      :date_column => 'date_created',
                      :sort_order  => 'date_created',
