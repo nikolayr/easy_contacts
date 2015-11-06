@@ -22,12 +22,14 @@ class EasyContact < ActiveRecord::Base
                           :association_foreign_key => 'custom_field_id'
 
 
+  belongs_to :project
 # TODO review search functionality
   acts_as_searchable :columns => ['first_name', 'last_name', 'date_created'],
                      :project_key => 'project_id',
                      :date_column => 'date_created',
                      :sort_order  => 'date_created',
                      :permission => :view_easy_contacts,
+                     :include => {:project => :enabled_modules},
                      :project_key => "#{EasyContact.table_name}.project_id"
 
 # TODO refine project id  :project_key => "#{EasyContact.table_name}.project_id",
