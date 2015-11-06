@@ -39,10 +39,14 @@ contacts. Index (list) will be via custom query.
 
 - installation
 
-> bundle exec rake redmine:plugins:migrate [RAILS_ENV=production]
-> then enable plugin within projects settings
-> don't forget to create role access group with easy contact enabled actions enabled
->  such as: view easy contacts, view easy contacts attachments, delete easy contacts attachments
+---
+
+ bundle exec rake redmine:plugins:migrate [RAILS_ENV=production]
+ then enable plugin within projects settings
+ don't forget to create role access group with easy contact enabled actions enabled
+ such as: view easy contacts, view easy contacts attachments, delete easy contacts attachments
+
+---
 
 - uninstall
 
