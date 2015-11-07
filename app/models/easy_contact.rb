@@ -21,8 +21,6 @@ class EasyContact < ActiveRecord::Base
                           :order => "#{CustomField.table_name}.position",
                           :join_table => "#{table_name_prefix}custom_fields_contacts#{table_name_suffix}",
                           :association_foreign_key => 'custom_field_id'
-
-
   belongs_to :project
 
   acts_as_searchable :columns => ['first_name', 'last_name'],
@@ -35,6 +33,7 @@ class EasyContact < ActiveRecord::Base
 
 # TODO refine project id  :project_key => "#{EasyContact.table_name}.project_id",
 
+  # get easy_contacts linked to journal details records on Contact Created, Contact Updated
   acts_as_activity_provider :type => 'easy_contacts',
                             :author_key => :author_id,
                             :permission => :view_easy_contacts,
@@ -42,6 +41,24 @@ class EasyContact < ActiveRecord::Base
                             :find_options => {:select => "#{EasyContact.table_name}.*",
                                               :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id"},
                             :timestamp => "#{table_name}.date_created"
+
+  acts_as_activity_provider :type => 'easy_contacts_update',
+                            :author_key => :author_id,
+                            :permission => :view_easy_contacts,
+                            :timestamp => "#{table_name}.date_created",
+                            :find_options => {:select => "#{EasyContact.table_name}.*,#{Journal.table_name}.notes",
+                                              :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id " +
+                                                        "LEFT JOIN #{Journal.table_name} ON #{EasyContact.table_name}.id = #{Journal.table_name}.journalized_id AND #{Journal.table_name}.journalized_type='EasyContact'"}
+
+#  has_many :journals, :foreign_key => :journalized_id, :as => :journalized
+
+#   , :as => :container,
+# :order => "#{Attachment.table_name}.created_on ASC, #{Attachment.table_name}.id ASC",
+# :dependent => :destroy
+
+
+
+
 # refine activity
 #  https://www.redmine.org/boards/3/topics/32790
 
@@ -69,7 +86,7 @@ class EasyContact < ActiveRecord::Base
     #      @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :value => obj.filename)
 
     unless @current_journal.nil?
-
+# if record is new add JournalDetail
       if self.changed?
         @current_journal.details << JournalDetail.new(:property => 'easy_contact', :prop_key => self.id, :value => "contact record updated")
       end
@@ -92,6 +109,7 @@ class EasyContact < ActiveRecord::Base
 
 # Callback on attachment deletion
   def attachment_removed(obj)
+    puts "remove attachments for this record"
     # TODO find attachment adn remove it (unless it's not required in another record)
   end
 

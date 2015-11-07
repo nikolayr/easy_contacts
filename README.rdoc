@@ -23,9 +23,6 @@ contacts. Index (list) will be via custom query.
 
  journal: save @current_journal added records
 
- activity: add link to author profile
- activity: check that activity is displayed when displayed on user activity page (not project one)
-
  check: pagination
  check: deletion of custom values
 

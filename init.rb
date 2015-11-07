@@ -15,6 +15,7 @@ Redmine::Plugin.register :easy_contacts do
 
   Redmine::Activity.map do |activity|
     activity.register(:easy_contacts,{:class_name => 'EasyContact'})
+    activity.register(:easy_contacts_update,{:class_name => 'EasyContact'})
   end
 
   menu :project_menu, :easy_contacts , { :controller => 'easy_contacts', :action => 'index'},
