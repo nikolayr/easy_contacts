@@ -30,27 +30,13 @@ class EasyContact < ActiveRecord::Base
                      :include => {:project => :enabled_modules},
                      :project_key => "#{EasyContact.table_name}.project_id"
 
-  # get easy_contacts linked to journal details records on Contact Created, Contact Updated
-
-  # acts_as_activity_provider :type => 'easy_contacts',
-  #                           :author_key => :author_id,
-  #                           :permission => :view_easy_contacts,
-  #                           :find_options => {:select => "#{EasyContact.table_name}.*",
-  #                                             :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id"},
-  #                           :timestamp => "#{table_name}.date_created"
-
   acts_as_activity_provider :type => 'easy_contacts_update',
                             :author_key => :author_id,
                             :permission => :view_easy_contacts,
                             :timestamp => "#{table_name}.date_created",
-                            :find_options => {:select => "#{EasyContact.table_name}.*,#{Journal.table_name}.notes,#{Journal.table_name}.created_on",
+                            :find_options => {:select => "#{EasyContact.table_name}.*,#{Journal.table_name}.notes,#{Journal.table_name}.created_on,#{Journal.table_name}.user_id",
                                               :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id " +
                                                         "LEFT JOIN #{Journal.table_name} ON #{EasyContact.table_name}.id = #{Journal.table_name}.journalized_id AND #{Journal.table_name}.journalized_type='EasyContact'"}
-
-#  Proc.new {|o| {:controller => 'attachments', :action => 'download', :id => o.id, :filename => o.filename}}
-
-  #has_one :journal, :foreign_key => :journalized_id, :as => :journalized
-  #:dependent => :destroy
 
   acts_as_event :title => :get_activity_title,
                 :url => :get_activity_url
@@ -64,14 +50,7 @@ class EasyContact < ActiveRecord::Base
   # called after_save
   def save_journal_info(*args)
     unless @current_journal.nil?
-
-      # if self.changed?
-      #   @current_journal.details << JournalDetail.new(:property => 'easy_contact', :prop_key => self.id, :value => "contact record updated")
-      # end
-
       @current_journal.save
-      # reset current journal
-      init_journal @current_journal.user, @current_journal.notes
     end
   end
 
@@ -106,7 +85,7 @@ class EasyContact < ActiveRecord::Base
 
   def author(*p)
     ec_user = self.author_id
-    if self.has_attribute? :user_id && !self.attributes['user_id'].nil?
+    if self.has_attribute?(:user_id) && !self.attributes['user_id'].nil?
       ec_user = self.attributes['user_id']
     end
 

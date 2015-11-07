@@ -18,11 +18,7 @@ contacts. Index (list) will be via custom query.
 ---
 
 2do
- journal: creating and updating contact is visible in user profile (activity)
- add user activity, contact created and conact updated
-
- journal: save @current_journal added records
-
+ check: activity timing
  check: pagination
  check: deletion of custom values
 
@@ -31,7 +27,6 @@ contacts. Index (list) will be via custom query.
  set/update author on contact creation
  sort out by projectid when showing all contacts
  research atachments/_links for .js deletion of newly added attachments
-
 ---
 
 == install
@@ -39,7 +34,7 @@ contacts. Index (list) will be via custom query.
 ---
 > bundle exec rake redmine:plugins:migrate [RAILS_ENV=production]
  then enable plugin within projects settings
- don't forget to create role access group with easy contact enabled actions enabled
+ don't forget to create role access group with easy contact enabled actions
  such as: view easy contacts, view easy contacts attachments, delete easy contacts attachments
 ---
 

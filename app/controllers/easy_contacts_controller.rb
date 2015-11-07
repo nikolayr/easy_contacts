@@ -24,15 +24,6 @@ class EasyContactsController < ApplicationController
   def index
     @project = Project.find_by_identifier(params[:project_id])
 
-    # @econtacts = EasyContact.all
-    #
-    # respond_to do |format|
-    #   format.html
-    #   format.json { render json: @econtacts }
-    # end
-
-    #@query is created within retrieve_query
-    #retrieve_query # this must be called as retrieve_ec_query
     retrieve_ec_query(@project.id)
 
     sort_init(@query.sort_criteria.empty? ? [['id']] : @query.sort_criteria)
@@ -95,7 +86,6 @@ class EasyContactsController < ApplicationController
 
     @project = Project.find_by_identifier(params[:project_id])
     usr_id = User.logged ? User.current.id : 0
-#params[:easy_contact][:author_id]
     new_flds = {first_name: params[:easy_contact][:first_name],
                 last_name: params[:easy_contact][:last_name],
                 project_id: @project.id,
@@ -105,7 +95,6 @@ class EasyContactsController < ApplicationController
     @econtact.custom_field_values ||=[]
 
     if params[:easy_contact].has_key? :custom_field_values
-      # TODO save values
       # CustomFieldValue
       @econtact.custom_field_values= params[:easy_contact][:custom_field_values]
     end
