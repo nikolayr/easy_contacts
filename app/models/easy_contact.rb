@@ -24,43 +24,33 @@ class EasyContact < ActiveRecord::Base
   belongs_to :project
 
   acts_as_searchable :columns => ['first_name', 'last_name'],
-                     :project_key => 'project_id',
                      :date_column => 'date_created',
                      :sort_order  => 'date_created',
                      :permission => :view_easy_contacts,
                      :include => {:project => :enabled_modules},
                      :project_key => "#{EasyContact.table_name}.project_id"
 
-# TODO refine project id  :project_key => "#{EasyContact.table_name}.project_id",
-
   # get easy_contacts linked to journal details records on Contact Created, Contact Updated
-  acts_as_activity_provider :type => 'easy_contacts',
-                            :author_key => :author_id,
-                            :permission => :view_easy_contacts,
-#                            :find_options => {:include => [:first_name, :last_name]},
-                            :find_options => {:select => "#{EasyContact.table_name}.*",
-                                              :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id"},
-                            :timestamp => "#{table_name}.date_created"
+
+  # acts_as_activity_provider :type => 'easy_contacts',
+  #                           :author_key => :author_id,
+  #                           :permission => :view_easy_contacts,
+  #                           :find_options => {:select => "#{EasyContact.table_name}.*",
+  #                                             :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id"},
+  #                           :timestamp => "#{table_name}.date_created"
 
   acts_as_activity_provider :type => 'easy_contacts_update',
                             :author_key => :author_id,
                             :permission => :view_easy_contacts,
                             :timestamp => "#{table_name}.date_created",
-                            :find_options => {:select => "#{EasyContact.table_name}.*,#{Journal.table_name}.notes",
+                            :find_options => {:select => "#{EasyContact.table_name}.*,#{Journal.table_name}.notes,#{Journal.table_name}.created_on",
                                               :joins => "LEFT JOIN #{Project.table_name} ON #{EasyContact.table_name}.project_id = #{Project.table_name}.id " +
                                                         "LEFT JOIN #{Journal.table_name} ON #{EasyContact.table_name}.id = #{Journal.table_name}.journalized_id AND #{Journal.table_name}.journalized_type='EasyContact'"}
 
-#  has_many :journals, :foreign_key => :journalized_id, :as => :journalized
+#  Proc.new {|o| {:controller => 'attachments', :action => 'download', :id => o.id, :filename => o.filename}}
 
-#   , :as => :container,
-# :order => "#{Attachment.table_name}.created_on ASC, #{Attachment.table_name}.id ASC",
-# :dependent => :destroy
-
-
-
-
-# refine activity
-#  https://www.redmine.org/boards/3/topics/32790
+  #has_one :journal, :foreign_key => :journalized_id, :as => :journalized
+  #:dependent => :destroy
 
   acts_as_event :title => :get_activity_title,
                 :url => :get_activity_url
@@ -68,28 +58,16 @@ class EasyContact < ActiveRecord::Base
   def init_journal(user, notes = "")
     @current_journal ||= Journal.new(:journalized => self, :user => user, :notes => notes)
     @current_journal.notify = false
-
-    if new_record?
-      @current_journal.notify = false
-    else
-      #save fields values for further storing in journal in case of values change
-      # @attributes_before_change = attributes.dup
-      # @custom_values_before_change = {}
-      # self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
-    end
     @current_journal
   end
 
   # called after_save
   def save_journal_info(*args)
-    puts "@current_journal must be stored"
-    #      @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :value => obj.filename)
-
     unless @current_journal.nil?
-# if record is new add JournalDetail
-      if self.changed?
-        @current_journal.details << JournalDetail.new(:property => 'easy_contact', :prop_key => self.id, :value => "contact record updated")
-      end
+
+      # if self.changed?
+      #   @current_journal.details << JournalDetail.new(:property => 'easy_contact', :prop_key => self.id, :value => "contact record updated")
+      # end
 
       @current_journal.save
       # reset current journal
@@ -98,7 +76,7 @@ class EasyContact < ActiveRecord::Base
   end
 
   def generate_timestamp
-    self.date_created = DateTime.now if self.date_created.nil?
+    self.date_created = current_time_from_proper_timezone if self.date_created.nil?
   end
 
   def attachment_added(obj)
@@ -109,8 +87,7 @@ class EasyContact < ActiveRecord::Base
 
 # Callback on attachment deletion
   def attachment_removed(obj)
-    puts "remove attachments for this record"
-    # TODO find attachment adn remove it (unless it's not required in another record)
+    # TODO check attachment removement
   end
 
   def project
@@ -128,15 +105,31 @@ class EasyContact < ActiveRecord::Base
   end
 
   def author(*p)
-    if self.author_id == 0
-      l(:label_user_anonymous)
-    else
-      User.find(self.author_id).name(:firstname_lastname)
+    ec_user = self.author_id
+    if self.has_attribute? :user_id && !self.attributes['user_id'].nil?
+      ec_user = self.attributes['user_id']
     end
+
+    ec_user == 0 ? l(:label_user_anonymous) : User.find(ec_user).name(:firstname_lastname)
   end
 
   def get_activity_title(*p)
-    l(:activity_ec_title,:id=>self.id,:first_name=>self.first_name,:last_name=>self.last_name)
+    a_title = ''
+    if self.has_attribute? :notes
+        if !!/.*Created.*/i.match(self.attributes['notes'])
+          a_title = l(:activity_ec_title_created,:id=>self.id)
+        else
+          if !!/.*Updated.*/i.match(self.attributes['notes'])
+            a_title = l(:activity_ec_title_updated,:id=>self.id)
+          end
+        end
+    end
+
+    if a_title.empty?
+      l(:activity_ec_title,:id=>self.id,:first_name=>self.first_name,:last_name=>self.last_name)
+    else
+      a_title
+    end
   end
 
   def get_activity_url(*p)
@@ -144,7 +137,11 @@ class EasyContact < ActiveRecord::Base
   end
 
   def created_on(*p)
-    self.date_created
+    if self.has_attribute? :notes
+      self.attributes['created_on'].nil? ? self.date_created+1 : Time.zone.parse(self.attributes['created_on'])
+    else
+      self.date_created
+    end
   end
 
   def description(*p)

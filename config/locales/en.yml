@@ -23,6 +23,8 @@ en:
   easy_contact_snglr:             "Contact"
   label_custom_fields:            "Custom fields"
   activity_ec_title:              "Contact #%{id}: %{first_name} %{last_name}"
+  activity_ec_title_created:      "Contact #%{id} created"
+  activity_ec_title_updated:      "Contact #%{id} updated"
   activity_easy_contact_description: ""
   label_ec_plural:                "Contacts"
   label_easy_contact_plural:     "Easy Contacts"
