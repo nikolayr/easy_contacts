@@ -110,6 +110,9 @@ class EasyContactsController < ApplicationController
       @econtact.custom_field_values= params[:easy_contact][:custom_field_values]
     end
 
+    @econtact.init_journal(User.current,"created new contact")
+
+
     @econtact.save_attachments(params[:attachments] || (params[:easy_contact] && params[:easy_contact][:uploads]))
 
     respond_to do |format|
@@ -131,6 +134,8 @@ class EasyContactsController < ApplicationController
     @econtact.project_id = @project.id if @econtact.project_id == 0
 
     @econtact.init_custom_flds
+
+    @econtact.init_journal(User.current,"updating record ##{@econtact.id}")
 
     @econtact.custom_field_values=params[:easy_contact][:custom_field_values]
 

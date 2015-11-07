@@ -7,6 +7,7 @@ class EasyContact < ActiveRecord::Base
   validates_length_of :first_name, :maximum => 30
   validates_length_of :last_name, :maximum => 30
 
+  after_save :save_journal_info
 
   safe_attributes 'first_name', 'last_name'
   acts_as_attachable :after_add => :attachment_added,
@@ -23,7 +24,7 @@ class EasyContact < ActiveRecord::Base
 
 
   belongs_to :project
-# TODO review search functionality
+
   acts_as_searchable :columns => ['first_name', 'last_name'],
                      :project_key => 'project_id',
                      :date_column => 'date_created',
@@ -34,8 +35,8 @@ class EasyContact < ActiveRecord::Base
 
 # TODO refine project id  :project_key => "#{EasyContact.table_name}.project_id",
 
-  acts_as_activity_provider :type => 'easy_contact_created',
-                            :author_key => nil,
+  acts_as_activity_provider :type => 'easy_contacts',
+                            :author_key => :author_id,
                             :permission => :view_easy_contacts,
 #                            :find_options => {:include => [:first_name, :last_name]},
                             :find_options => {:select => "#{EasyContact.table_name}.*",
@@ -47,23 +48,36 @@ class EasyContact < ActiveRecord::Base
   acts_as_event :title => :get_activity_title,
                 :url => :get_activity_url
 
-# Saves the changes in a Journal
-# Called after_save
-  def create_journal
-    # TODO init journal and save activity on attach added, new contact item created
-    puts "no journa for now"
-  end
-
   def init_journal(user, notes = "")
     @current_journal ||= Journal.new(:journalized => self, :user => user, :notes => notes)
+    @current_journal.notify = false
+
     if new_record?
       @current_journal.notify = false
     else
-      @attributes_before_change = attributes.dup
-      @custom_values_before_change = {}
-      self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
+      #save fields values for further storing in journal in case of values change
+      # @attributes_before_change = attributes.dup
+      # @custom_values_before_change = {}
+      # self.custom_field_values.each {|c| @custom_values_before_change.store c.custom_field_id, c.value }
     end
     @current_journal
+  end
+
+  # called after_save
+  def save_journal_info(*args)
+    puts "@current_journal must be stored"
+    #      @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :value => obj.filename)
+
+    unless @current_journal.nil?
+
+      if self.changed?
+        @current_journal.details << JournalDetail.new(:property => 'easy_contact', :prop_key => self.id, :value => "contact record updated")
+      end
+
+      @current_journal.save
+      # reset current journal
+      init_journal @current_journal.user, @current_journal.notes
+    end
   end
 
   def generate_timestamp
@@ -71,7 +85,7 @@ class EasyContact < ActiveRecord::Base
   end
 
   def attachment_added(obj)
-    if @current_journal # && !obj.new_record?
+    if @current_journal && !obj.new_record?
       @current_journal.details << JournalDetail.new(:property => 'attachment', :prop_key => obj.id, :value => obj.filename)
     end
   end
